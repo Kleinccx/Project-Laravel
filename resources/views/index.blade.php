@@ -122,7 +122,8 @@
     <!-- Hero Slider Begin -->
     <section class="hero-slider">
         <div class="hero-items owl-carousel">
-            <div class="single-slider-item set-bg" data-setbg="/bootstrapred/img/slider-1.jpg">
+            <!-- <div class="single-slider-item set-bg" data-setbg="/bootstrapred/img/slider-1.jpg"> -->
+            <div class="single-slider-item set-bg" data-setbg="/bootstrapred/img/jason.jpg">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
@@ -210,7 +211,8 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="single-box-item second-box">
-                                    <img src="/bootstrapred/img/f-box-2.jpg" alt="">
+                                    <!-- <img src="/bootstrapred/img/f-box-2.jpg" alt=""> -->
+                                    <img src="/bootstrapred/img/jason.jpg" alt="">
                                     <div class="box-text">
                                         <span class="trend-year">2019 Trend</span>
                                         <h2>Footwear</h2>
@@ -304,7 +306,7 @@
                 </div>
                 <div class="col-lg-5 offset-lg-1">
                     <div class="lookbok-pic">
-                        <img src="/bootstrapred/img/lookbok.jpg" alt="">
+                        <img src="/bootstrapred/img/jason.jpg" alt="">
                         <div class="pic-text">fashion</div>
                     </div>
                 </div>
