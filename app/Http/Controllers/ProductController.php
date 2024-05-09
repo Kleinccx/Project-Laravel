@@ -23,13 +23,21 @@ class ProductController extends Controller
         $products = Product::inRandomOrder()->take(6)->get();
         return view('product-details')->with('product', $product)->with('products', $products);
     }
-
-    public function shop()
+    
+    public function addProduct() 
     {
-        $products = Product::all();
-        $users = User::all();
-
-        return view('templates.shop')->with('products', $products)->with('users', $users);
+        return view ('add_product');
     }
-
+    public function addProductPost(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|unique:products,product_name',
+            'price' => 'required',
+            'quantity' => 'required',
+            'description' => 'required',
+        ]);
+        
+        
+        Product::create($validatedData);
+}
 }

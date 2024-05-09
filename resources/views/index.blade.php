@@ -3,11 +3,14 @@
     <x-navbar />
 
     <h2> All Products </h2>
+    <a href ="/add-product" class="btn-btn-primary mb-3"> Add Product </a>
     <x-products :products="$products"/>
     <h2> All Users </h2>
     <x-users :users="$users"/>
 
     @include('templates.footer')
+    
+
     <!DOCTYPE html>
 <html lang="zxx">
 
@@ -72,7 +75,7 @@
                 </div>
                 <nav class="main-menu mobile-menu">
                     <ul>
-                    <a href="{{ route('index') }}" style="text-decoration: none;">Home</a>
+                    <a href="{{ route('index') }}">Home</a>
                         <li><a href="./categories.html">Shop</a>
                             <ul class="sub-menu">
                                 <li><a href="product-page.html">Product Page</a></li>
@@ -94,7 +97,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="header-item">
-                        <img src="img/icons/delivery.png" alt="">
+                        <img src="/bootstrapred/img/icons/delivery.png" alt="">
                         <p>Free shipping on orders over $30 in USA</p>
                     </div>
                 </div>
@@ -262,7 +265,7 @@
                 </figure>
                 <div class="product-text">
                     <h6 class="product-name">{{$product->product_name}}</h6>
-                  <!--  <p><strong>Description:</strong> {{$product->description}}</p> -->
+                   <p><strong>Description:</strong> {{$product->description}}</p> 
                     <p><strong></strong> ${{$product->price}}</p>
                
                 </div>

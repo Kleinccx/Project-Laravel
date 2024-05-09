@@ -25,3 +25,5 @@ Route::get('/',[ProductController::class, 'index']);
 Route::get('/product-details/{id}',[ProductController::class, 'productDetails']);
 
 Route::get('/', [ProductController::class, 'index'])->name('index');
+Route::get('/add-product',[ProductController::class, 'addProduct']);
+Route::post('/add-product',[ProductController::class, 'addProductPost']);
