@@ -26,4 +26,6 @@ Route::get('/product-details/{id}',[ProductController::class, 'productDetails'])
 
 Route::get('/', [ProductController::class, 'index'])->name('index');
 Route::get('/add-product',[ProductController::class, 'addProduct']);
-Route::post('/add-product',[ProductController::class, 'addProductPost']);
+Route::post('/add-product', [ProductController::class, 'addProductPost'])->name('add.product.post');
+Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+

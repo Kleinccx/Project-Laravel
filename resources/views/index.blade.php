@@ -1,14 +1,14 @@
-  @include('templates.header')
+  <!--@include('templates.header')
 
     <x-navbar />
 
     <h2> All Products </h2>
     <a href ="/add-product" class="btn-btn-primary mb-3"> Add Product </a>
     <x-products :products="$products"/>
-    <h2> All Users </h2>
+    <h2> All Users </h2>z
     <x-users :users="$users"/>
 
-    @include('templates.footer')
+    @include('templates.footer') -->
     
 
     <!DOCTYPE html>
@@ -76,7 +76,7 @@
                 <nav class="main-menu mobile-menu">
                     <ul>
                     <a href="{{ route('index') }}">Home</a>
-                        <li><a href="./categories.html">Shop</a>
+                    <li><a href="{{ route('shop') }}">Shop</a>
                             <ul class="sub-menu">
                                 <li><a href="product-page.html">Product Page</a></li>
                                 <li><a href="shopping-cart.html">Shopping Card</a></li>
@@ -258,23 +258,22 @@
                 </div>
             </div>
             <div class="row" id="product-list">
-    @foreach($products as $product)
-        <div class="col-lg-3 col-sm-6 mix all dresses bags">
-            <div class="single-product-item">
-                <figure>
-                    <a href="#"><img src="/bootstrapred/img/products/img-{{$product->id}}.jpg" alt=""></a>
-                    <div class="p-status">{{$product->status}}</div>
-                </figure>
-                <div class="product-text">
-                    <h6 class="product-name">{{$product->product_name}}</h6>
-                   <p><strong>Description:</strong> {{$product->description}}</p> 
-                    <p><strong></strong> ${{$product->price}}</p>
-               
-                </div>
-            </div>
+              @foreach($products as $product)
+       <div class="col-lg-3 col-sm-6 mix all dresses bags">
+    <div class="single-product-item">
+        <figure>
+            <a href="#"><img src="{{$product->imageUrl}}" alt=""></a>
+        </figure>
+        <div class="product-text">
+            <h6 class="product-name">{{$product->product_name}}</h6>
+            <p><strong>Description:</strong> {{$product->description}}</p> 
+            <p><strong>Price:</strong> ${{$product->price}}</p>
         </div>
+    </div>
+</div>
     @endforeach
 </div>
+
 <style>
 
 .product-name {

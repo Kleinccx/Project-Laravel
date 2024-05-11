@@ -29,15 +29,40 @@ class ProductController extends Controller
         return view ('add_product');
     }
     public function addProductPost(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|unique:products,product_name',
-            'price' => 'required',
-            'quantity' => 'required',
-            'description' => 'required',
-        ]);
-        
-        
-        Product::create($validatedData);
+{
+    $validatedData = $request->validate([
+        'product_name' => 'required|unique:products,product_name',
+        'price' => 'required',
+        'quantity' => 'required',
+        'description' => 'required',
+        'imageUrl' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $product = new Product;
+    $product->product_name = $validatedData['product_name'];
+    $product->price = $validatedData['price'];
+    $product->quantity = $validatedData['quantity'];
+    $product->description = $validatedData['description'];
+
+    if ($request->hasFile('imageUrl')) {
+        $image = $request->file('imageUrl');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('images'), $imageName);
+        $imageUrl = asset('images/' . $imageName);
+        $product->imageUrl = $imageUrl;
+    }
+
+    $product->save();
+
+    return redirect()->route('index')->with('success', 'Product added successfully');
 }
-}
+
+  
+        public function shop()
+        {
+            $products = Product::all();
+            $users = User::all();
+
+            return view('shop', compact('products', 'users'));
+        }
+}    
