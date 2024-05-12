@@ -20,7 +20,7 @@
     <meta name="keywords" content="Yoga, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Violet | Template</title>
+    <title>Jarred's Style Haven</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
@@ -248,7 +248,7 @@
                             <h2>2024 <br />#lookbook</h2>
                         </div>
                         <p>Welcome to our online shop, where you'll find a wide range of stylish and comfortable apparel to enhance your wardrobe. Explore our collection of t-shirts, polo shirts, long-sleeve tops, and pants, meticulously designed to meet your fashion needs. Whether you're looking for a casual and trendy t-shirt for everyday wear, a versatile polo shirt for a smart-casual look, a cozy long-sleeve top for cooler days, or a pair of fashionable pants to complete your outfit – we have you covered. Our garments are crafted with the utmost care, using high-quality materials to ensure both durability and comfort. With our diverse selection, you can effortlessly express your personal style and create fashionable outfits for any occasion. Shop with confidence, knowing that we prioritize your satisfaction and strive to deliver exceptional products that exceed your expectations. Upgrade your wardrobe today and embrace a new level of style and sophistication with our premium t-shirts, polo shirts, long-sleeve tops, and pants.</p>
-                        <a href="{{route('about')}}" class="primary-btn look-btn">See More</a>
+                        <a href="{{route" class="primary-btn look-btn">See More</a>
                     </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1">

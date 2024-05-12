@@ -7,7 +7,7 @@
     <meta name="keywords" content="Yoga, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Violet | Template</title>
+    <title>Jarred's Style Haven</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
@@ -114,14 +114,13 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="page-breadcrumb">
-                        <h2>Shirts<span>.</span></h2>
-                        <a href="#">Home</a>
-                        <a href="#">Dresses</a>
-                        <a class="active" href="#">Night Dresses</a>
+                        <h2>Enjoy Shopping<span>.</span></h2>
+                        <a href="{{route('index')}}">Home</a>
+                        <a href="{{route('category')}}">Categories</a>
+                        <a class="active" href="{{route('about')}}">About</a>
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <img src="/bootstrapred/img/add.jpg" alt="">
                 </div>
             </div>
         </div>
