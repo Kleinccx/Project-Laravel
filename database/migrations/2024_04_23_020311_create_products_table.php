@@ -8,19 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_name');
-            $table->string('description');
-            $table->decimal('price', 6, 2);
-            $table->integer('quantity');
-            $table->string('imageUrl')->nullable();
-            $table->timestamps();
-        });
-    }
+   */
+  public function up(): void
+  {
+      Schema::create('products', function (Blueprint $table) {
+          $table->id();
+          $table->string('product_name');
+          $table->string('description');
+          $table->decimal('price', 6, 2);
+          $table->integer('quantity');
+          $table->string('imageUrl')->nullable();
+          $table->string('product_status')->default('available');
+          $table->unsignedBigInteger('category_id')->default('1');
+       
+          $table->timestamps();
+      });
+  }
 
     /**
      * Reverse the migrations.

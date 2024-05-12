@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -27,12 +25,13 @@
 </head>
 
 <body>
+    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
     
     <!-- Search model -->
-	<div class="search-model">
+	<div class="search-model">  
 		<div class="h-100 d-flex align-items-center justify-content-center">
 			<div class="search-close-switch">+</div>
 			<form class="search-model-form">
@@ -47,13 +46,15 @@
         <div class="container-fluid">
             <div class="inner-header">
                 <div class="logo">
-                    <a href="./index.html"><img src="/bootstrapred/img/logo.png" alt=""></a>
+                <a href="./index.html">
+                    <img src="/bootstrapred/img/jarlogo.png" alt="" width="150" height="50">
+                    </a>
                 </div>
                 <div class="header-right">
                     <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
                     <img src="/bootstrapred/img/icons/man.png" alt="">
                     <a href="#">
-                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+                        <img src="img/icons/bag.png" alt="">
                         <span>2</span>
                     </a>
                 </div>
@@ -63,15 +64,15 @@
                 </div>
                 <nav class="main-menu mobile-menu">
                     <ul>
-                    <a href="{{ route('index') }}">Home</a>
-                        <li><a href="{{ route('shop') }}">Shop</a>
+                    <li> <a href="{{ route('index') }}">Home</a></li>
+                    <li><a href="{{ route('shop') }}">Shop</a>
                             <ul class="sub-menu">
-                                <li><a href="product-page.html">Product Page</a></li>
-                                <li><a href="shopping-cart.html">Shopping Card</a></li>
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
+                                <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
                                 <li><a href="check-out.html">Check out</a></li>
                             </ul>
                         </li>
-                        <li><a href="./product-page.html">About</a></li>
+                        <li><a href="{{ route('about') }}">About</a></li>
                         <li><a href="./check-out.html">Blog</a></li>
                         <li><a href="./contact.html">Contact</a></li>
                     </ul>
@@ -128,141 +129,43 @@
     <!-- Page Add Section End -->
 
     <!-- Product Page Section Beign -->
-    <section class="product-page">
+   
+    <!-- Product Page Section End -->
+
+    <!-- Related Product Section Begin -->
+    <section class="related-product spad">
     <div class="container">
-        <div class="product-control">
-            <a href="#" class="prev-slide">Previous</a>
-            <a href="#" class="next-slide">Next</a>
-        </div>
         <div class="row">
-            <div class="col-lg-6">
-                <div class="product-slider owl-carousel">
-                    @foreach($products as $product)
-                    <div class="product-img">
-                        <figure>
-                            <img src="{{ $product->imageUrl }}" alt="">
-                            <div class="p-status">new</div>
-                        </figure>
-                    </div>
-                    @endforeach
+            <div class="col-lg-12 text-center">
+                <div class="section-title">
+                    <h2>All Products</h2>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="product-content">
-                    <h2 class="product-name"></h2>
-                    <div class="pc-meta">
-                        <h5 class="product-price"></h5>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </div>
+        </div>
+        <div class="row">
+    @foreach($products as $product)
+    <div class="col-lg-3 col-sm-6">
+        <div class="single-product-item">
+            <figure>
+                <a href="{{ route('addToCart', ['id' => $product->id]) }}">
+                    <img src="{{ $product->imageUrl }}" alt="">
+                    <div class="add-to-cart-btn">
+                        <i class="fa fa-shopping-cart"></i>
                     </div>
-                    <p class="product-description"></p>
-                    <ul class="tags">
-                    </ul>
-                    <div class="product-quantity">
-                        <div class="pro-qty">
-                            <input type="text" value="1">
-                        </div>
-                    </div>
-                    <a href="#" class="primary-btn pc-btn">Add to cart</a>
-                    <ul class="p-info">
-                        <li><a href="#product-info">Product Information</a></li>
-                        <li><a href="#product-reviews">Reviews</a></li>
-                        <li><a href="#product-care">Product Care</a></li>
-                    </ul>
-                </div>
+                </a>
+                <div class="p-status">{{ $product->status }}</div>
+            </figure>
+            <div class="product-text">
+                <h6>{{ $product->product_name }}</h6>
+                <p>${{ $product->price }}</p>
             </div>
         </div>
     </div>
+    @endforeach
+</div>
+</div>
+    </div>
 </section>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script>
-$(document).ready(function() {
-    var productSlider = $(".product-slider");
-    var productContent = $(".product-content");
-    var productImages = productSlider.find(".product-img");
-    var productNames = [
-        @foreach($products as $product)
-        "{{ $product->product_name }}",
-        @endforeach
-    ];
-    var productPrices = [
-        @foreach($products as $product)
-        "${{ $product->price }}",
-        @endforeach
-    ];
-    var productDescriptions = [
-        @foreach($products as $product)
-        "{{ $product->description }}",
-        @endforeach
-    ];
-    var currentSlide = 0;
-    var totalSlides = productNames.length;
-
-    // Initialize product content with the first product
-    updateProductContent(0);
-
-    // Initialize Owl Carousel with options
-    productSlider.owlCarousel({
-        items: 1, // Display one item at a time
-        loop: true, // Enable loop behavior
-        mouseDrag: true, // Enable mouse drag
-        touchDrag: true, // Enable touch drag
-        onInitialized: function() {
-            // Update product content based on the current slide
-            updateProductContent(this.current());
-        }
-    });
-
-    // Handle slide change event
-    productSlider.on("changed.owl.carousel", function(event) {
-        currentSlide = event.item.index;
-        updateProductContent(currentSlide);
-    });
-
-    // Update product content based on the current slide
-    function updateProductContent(slideIndex) {
-        var productName = productNames[slideIndex];
-        var productPrice = productPrices[slideIndex];
-        var productDescription = productDescriptions[slideIndex];
-
-        productContent.find(".product-name").text(productName);
-        productContent.find(".product-price").text(productPrice);
-        productContent.find(".product-description").text(productDescription);
-
-        // Additional logic to update other elements if needed
-        // For example, updating the image and other details
-        var productImage = productImages.eq(slideIndex).find("img").attr("src");
-        productContent.find(".product-img img").attr("src", productImage);
-    }
-
-    // Previous slide
-    $(".prev-slide").on("click", function(e) {
-        e.preventDefault();
-        if (currentSlide === 0) {
-            productSlider.trigger("to.owl.carousel", totalSlides - 1);
-        } else {
-            productSlider.trigger("prev.owl.carousel");
-        }
-    });
-
-    //// Next slide
-$(".next-slide").on("click", function(e) {
-    e.preventDefault();
-    if (currentSlide === totalSlides - 1) {
-        productSlider.trigger("to.owl.carousel", 0);
-    } else if (currentSlide < totalSlides - 1) {
-        productSlider.trigger("next.owl.carousel");
-    }
-});
-});
-    
-</script>
     <!-- Related Product Section End -->
 
     <!-- Footer Section Begin -->
@@ -352,6 +255,31 @@ $(".next-slide").on("click", function(e) {
 		</div>
     </footer>
     <!-- Footer Section End -->
+
+
+    <!-- CCS -->
+    <style>
+        .single-product-item {
+            position: relative;
+        }
+
+        .add-to-cart-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .add-to-cart-btn i {
+            margin-right: 5px;
+        }
+    </style>
 
     <!-- Js Plugins -->
     <script src="/bootstrapred/js/jquery-3.3.1.min.js"></script>
