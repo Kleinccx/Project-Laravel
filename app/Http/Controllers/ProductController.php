@@ -36,6 +36,7 @@ class ProductController extends Controller
             'quantity' => 'required',
             'description' => 'required',
             'imageUrl' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
     ]);
 
             $product = new Product;

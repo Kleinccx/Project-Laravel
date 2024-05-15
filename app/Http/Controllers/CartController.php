@@ -5,38 +5,50 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
-use App\Models\Cart; // Add this import statement
+use App\Models\Cart; 
 
 class CartController extends Controller
 {
-    public function addToCart(Request $request, $id)
-    {
-        // Retrieve the authenticated user
-        $user = null; // Set user to null if not using authentication
-        
-        // Retrieve the product
-        $product = Product::find($id);
+    // in CartController.php
+// PHP (Laravel) code
+// in CartController.php
+public function addToCart(Request $request, $id)
+{
+    $product = Product::findOrFail($id);
+    $user = auth()->user();
 
-        if (!$product) {
-            return redirect()->back()->with('error', 'Product not found.');
-        }
+    // Check if the product is already in the user's cart
+    $cartItem = $user->carts()->where('product_id', $id)->first();
 
-        // Create the cart
-        $cart = Cart::create([
-            'product_id' => $product->id,
+    if ($cartItem) {
+        // Increment the quantity of the existing cart item
+        $cartItem->quantity++;
+        $cartItem->save();
+    } else {
+        // Create a new cart item
+        $cartItem = $user->carts()->create([
+            'product_id' => $id,
             'quantity' => 1,
             'price' => $product->price,
-            'user_id' => $user ? $user->id : null, // Use null if user is null
         ]);
+    }
 
-        return redirect()->route('cart.view')->with('success', 'Product added to cart.');
+    // Return a success message instead of a JSON response
+    return redirect()->back()->with('success', 'Product added to cart successfully');
+}
+
+public function view()
+{
+    $user = auth()->user();
+    $cart_items = $user ? $user->carts()->with('product')->get() : [];
+
+    $total = 0;
+    if ($cart_items instanceof Countable && count($cart_items) > 0) {
+        foreach ($cart_items as $item) {
+            $total += $item->quantity * $item->price;
+        }
     }
-    
-    public function view()
-    {
-        // Retrieve the user's carts
-        $carts = Cart::all();
-    
-        return view('cart', ['carts' => $carts]);
-    }
+
+    return view('cart', compact('cart_items', 'total'));
+}
 }

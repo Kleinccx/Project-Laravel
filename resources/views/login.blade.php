@@ -109,31 +109,32 @@
                     </p>
                   </div>
                 </div>
-                <form method="POST" action="{{ route('login') }}" onsubmit="event.preventDefault(); window.location.href = '/';">
-                  @csrf
-                  <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="form-control">
-                    @error('email')
-                        <div class="error">{{ $message }}</div>
-                    @enderror
-                    </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-group">
-                      <input id="password" type="password" name="password" required class="form-control">
-                      <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                          <i class="fa fa-eye"></i>
-                        </button>
-                      </div>
-                    </div>
-                    @error('password')
-                      <div class="error">{{ $message }}</div>
-                    @enderror
-                  </div>
+                <form method="POST" action="{{ route('login') }}">
+    @csrf
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="form-control">
+        @error('email')
+            <div class="error">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+            <input id="password" type="password" name="password" required class="form-control">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                    <i class="fa fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        @error('password')
+            <div class="error">{{ $message }}</div>
+        @enderror
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
                   <div class="form-group actions">
-                    <button type="submit" class="btn btn-primary">Login</button>
                   </div>
                   <div class="form-group d-md-flex">
                     <div class="w-50 text-left">

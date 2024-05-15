@@ -132,7 +132,8 @@
     <!-- Product Page Section End -->
 
     <!-- Related Product Section Begin -->
-    <section class="related-product spad">
+   <!-- Related Product Section Begin -->
+<section class="related-product spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -142,30 +143,107 @@
             </div>
         </div>
         <div class="row">
-    @foreach($products as $product)
-    <div class="col-lg-3 col-sm-6">
-        <div class="single-product-item">
-            <figure>
-                <a href="{{ route('addToCart', ['id' => $product->id]) }}">
-                    <img src="{{ $product->imageUrl }}" alt="">
-                    <div class="add-to-cart-btn">
-                        <i class="fa fa-shopping-cart"></i>
+            @foreach($products as $product)
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-product-item">
+                    <figure>
+                        <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST" class="add-to-cart-form">
+                            @csrf
+                            <button type="submit" class="add-to-cart-btn" data-product-id="{{ $product->id }}">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                        <img src="{{ $product->imageUrl }}" alt="">
+                        <div class="p-status">{{ $product->status }}</div>
+                    </figure>
+                    <div class="product-text">
+                        <h6>{{ $product->product_name }}</h6>
+                        <p>${{ $product->price }}</p>
                     </div>
-                </a>
-                <div class="p-status">{{ $product->status }}</div>
-            </figure>
-            <div class="product-text">
-                <h6>{{ $product->product_name }}</h6>
-                <p>${{ $product->price }}</p>
+                </div>
             </div>
+            @endforeach
         </div>
     </div>
-    @endforeach
-</div>
-</div>
-    </div>
 </section>
-    <!-- Related Product Section End -->
+<!-- Related Product Section End -->
+
+<script>
+ addToCartForms.forEach(form => {
+    form.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+        console.log('Form submitted');
+
+        const productId = event.target.querySelector('.add-to-cart-btn').dataset.productId;
+        console.log('Product ID:', productId);
+
+        // Make a POST request to the cart/add/{id} route
+        fetch(`/cart/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            console.log(data);
+            if (data.success) {
+                // Display the success modal
+                const modal = document.createElement('div');
+                modal.classList.add('modal', 'fade');
+                modal.setAttribute('id', 'successModal');
+                modal.setAttribute('tabindex', '-1');
+                modal.setAttribute('role', 'dialog');
+                modal.setAttribute('aria-labelledby', 'successModalLabel');
+                modal.setAttribute('aria-hidden', 'true');
+
+                const modalDialog = document.createElement('div');
+                modalDialog.classList.add('modal-dialog', 'modal-dialog-centered');
+
+                const modalContent = document.createElement('div');
+                modalContent.classList.add('modal-content');
+
+                const modalHeader = document.createElement('div');
+                modalHeader.classList.add('modal-header');
+
+                const modalTitle = document.createElement('h5');
+                modalTitle.classList.add('modal-title');
+                modalTitle.setAttribute('id', 'successModalLabel');
+                modalTitle.textContent = 'Success!';
+
+                const closeButton = document.createElement('button');
+                closeButton.classList.add('close');
+                closeButton.setAttribute('type', 'button');
+                closeButton.setAttribute('data-dismiss', 'modal');
+                closeButton.setAttribute('aria-label', 'Close');
+                closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
+
+                const modalBody = document.createElement('div');
+                modalBody.classList.add('modal-body');
+                modalBody.textContent = 'Product added to cart successfully!';
+
+                modalHeader.appendChild(modalTitle);
+                modalHeader.appendChild(closeButton);
+                modalContent.appendChild(modalHeader);
+                modalContent.appendChild(modalBody);
+                modalDialog.appendChild(modalContent);
+                modal.appendChild(modalDialog);
+
+                document.body.appendChild(modal);
+
+                // Show the modal
+                $('#successModal').modal('show');
+            }
+        })
+        .catch(error => {
+            // Handle any errors
+            console.error(error);
+        });
+    });
+});
+</script>
 
     <!-- Footer Section Begin -->
     <footer class="footer-section spad">
