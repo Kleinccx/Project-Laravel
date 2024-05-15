@@ -154,7 +154,7 @@
                             </button>
                         </form>
                         <img src="{{ $product->imageUrl }}" alt="">
-                        <div class="p-status">{{ $product->status }}</div>
+                        <div class="p-status">{{ $product->product_status }}</div>
                     </figure>
                     <div class="product-text">
                         <h6>{{ $product->product_name }}</h6>

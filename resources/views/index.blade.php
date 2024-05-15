@@ -66,7 +66,9 @@
                     <img src="/bootstrapred/img/icons/man.png" alt="">
                     <a href="#">
                         <img src="img/icons/bag.png" alt="">
-                        <span>2</span>
+                            <!--I NEED TO SESSION THE AUTHENTICATED USER HERE-->
+               
+
                     </a>
                 </div>
                 <div class="user-access">

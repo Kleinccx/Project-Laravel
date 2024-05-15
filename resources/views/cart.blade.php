@@ -42,11 +42,12 @@
 	<!-- Search model end -->
 
     <!-- Header Section Begin -->
+    <!-- Header Section Begin -->
     <header class="header-section">
         <div class="container-fluid">
             <div class="inner-header">
                 <div class="logo">
-                <img src="/bootstrapred/img/jarlogo.png" alt="" width="150" height="50">
+                <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
                 </div>
                 <div class="header-right">
                     <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
@@ -57,13 +58,14 @@
                     </a>
                 </div>
                 <div class="user-access">
-                    <a href="#">Register</a>
-                    <a href="#" class="in">Sign in</a>
+                <a href="{{ route('register') }}">Register /</a>
+                          <a href="{{ route('login') }}">Login</a>
+             
                 </div>
                 <nav class="main-menu mobile-menu">
                     <ul>
                     <li> <a href="{{ route('index') }}">Home</a></li>
-                        <li><a href="{{ route('shop') }}">Shop</a>
+                    <li><a href="{{ route('category') }}">Shop</a>
                             <ul class="sub-menu">
                             <li><a href="{{ route('shop') }}">Product Page</a></li>
                                 <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
@@ -104,64 +106,156 @@
         </div>
     </div>
     <!-- Header Info End -->
-    <!-- Header End -->
-
-    <!-- Page Add Section Begin -->
-    <section class="page-add cart-page-add">
+      <!-- Page Add Section Begin -->
+      <section class="page-add cart-page-add">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
                     <div class="page-breadcrumb">
                         <h2>Cart<span>.</span></h2>
-                        <a href="#">Home</a>
-                        <a href="#">Dresses</a>
-                        <a class="active" href="#">Night Dresses</a>
+                        <a href="{{route('index')}}">Home</a>
+                        <a href="{{route('cart.view')}}">Cart</a>
+               
                     </div>
                 </div>
                 <div class="col-lg-8">
-          
+                    <img src="img/add.jpg" alt="">
                 </div>
             </div>
         </div>
     </section>
     <!-- Page Add Section End -->
+    <!-- Header End -->
 
-    <!-- Cart Page Section Begin -->
+ <!-- Page Add Section Begin -->
+ <div class="cart-page">
     <div class="container">
-    <h1>Your Cart</h1>
+        <div class="cart-table">
+            <table>
+                <thead>
+                    @if($cart_items instanceof Countable && count($cart_items) > 0)
+                    <tr>
+                        <th class="product-h">Product</th>
+                        <th>Price</th>
+                        <th class="quan">Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="cart-tbody">
+                    @foreach($cart_items as $item)
+                    <tr class="cart-item" data-item-id="{{ $item->id }}">
+                        <td class="product-col">
+                            <img src="{{ $item->product->imageUrl }}" alt="">
+                            <div class="p-title">
+                                <h5>{{ $item->product->product_name }}</h5>
+                            </div>
+                        </td>
+                        <td class="price-col">{{ $item->price }}</td>
+                        <td class="quantity-col">
+                            {{ $item->product->quantity }}
+                        </td>
+                        <td class="product-close"><span class="remove-item">x</span></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                @else
+                <p>Your cart is empty.</p>
+                @endif
+            </table>
+        </div>
+        <div class="cart-btn">
+            <div class="row">
+                <div class="col-lg-6">
 
-    @if($cart_items instanceof Countable && count($cart_items) > 0)
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($cart_items as $item)
-            <tr>
-                <td>{{ $item->product->name }}</td>
-                <td>{{ $item->quantity }}</td>
-                <td>{{ $item->price }}</td>
-                <td>{{ $item->quantity * $item->price }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <div class="row justify-content-end">
-        <div class="col-md-4">
-            <h3>Total: {{ $total }}</h3>
+                </div>
+                <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
+                    <div class="site-btn clear-btn">Clear Cart</div>
+                    <div class="site-btn update-btn"> Checkout</div>
+                </div>
+            </div>
         </div>
     </div>
-    @else
-    <p>Your cart is empty.</p>
-    @endif
 </div>
-    <!-- Cart Page Section End -->
+
+<script>
+    // Add event listener to quantity input and buttons
+document.querySelectorAll('.quantity-input, .qtybtn').forEach(element => {
+    element.addEventListener('click', function() {
+        const quantityInput = this.closest('.pro-qty').querySelector('.quantity-input');
+        let quantity = parseInt(quantityInput.value);
+        const itemId = this.closest('.cart-item').dataset.itemId;
+
+        // Update the quantity input value
+        if (this.classList.contains('inc')) {
+            quantity = quantity + 1;
+            quantityInput.value = quantity;
+            updateCartItem(itemId, quantity);
+        } else if (this.classList.contains('dec')) {
+            quantity = quantity - 1;
+            if (quantity < 1) {
+                // Remove the item from the cart
+                removeCartItem(itemId);
+                return;
+            }
+            quantityInput.value = quantity;
+            updateCartItem(itemId, quantity);
+        }
+    });
+});
+
+// Function to update the cart item
+function updateCartItem(itemId, quantity) {
+    // Make an AJAX request to update the item quantity on the server
+    fetch(`/cart/update/${itemId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ quantity: quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(`Updating item with ID ${itemId} to quantity ${quantity}.`);
+        updateCartTotal();
+    })
+    .catch(error => {
+        console.error('Error updating cart item:', error);
+    });
+}
+
+// Function to remove an item from the cart
+function removeCartItem(itemId) {
+    // Make an AJAX request to remove the item from the cart on the server
+    fetch(`/cart/remove/${itemId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(`Removing item with ID ${itemId} from the cart.`);
+
+        // Remove the corresponding table row
+        const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
+        cartItem.remove();
+
+        updateCartTotal();
+    })
+    .catch(error => {
+        console.error('Error removing cart item:', error);
+    });
+}
+
+// Function to update the cart total
+function updateCartTotal() {
+    // Your implementation to update the cart total
+    console.log('Updating the cart total.');
+}
+</script>
+<!-- Cart Page Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer-section spad">

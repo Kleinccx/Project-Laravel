@@ -45,7 +45,7 @@ public function view()
     $total = 0;
     if ($cart_items instanceof Countable && count($cart_items) > 0) {
         foreach ($cart_items as $item) {
-            $total += $item->quantity * $item->price;
+            $total += $item->quantity * $item->product->quantity;
         }
     }
 

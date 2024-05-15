@@ -82,6 +82,15 @@ class UserController extends Controller
         return view('login');
     }
 }
+public function profile(Request $request)
+{
+    // Your login logic here
+
+    // Assuming the user is authenticated successfully
+    $user = auth()->user();
+    return redirect()->route('index')->with('userName', $user->name);
+}
+
 public function carts()
 {
     return $this->hasMany(Cart::class);
