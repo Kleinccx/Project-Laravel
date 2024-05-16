@@ -46,26 +46,25 @@
         <div class="container-fluid">
             <div class="inner-header">
                 <div class="logo">
-                <a href="./index.html">
-                    <img src="/bootstrapred/img/jarlogo.png" alt="" width="150" height="50">
-                    </a>
+                <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
                 </div>
                 <div class="header-right">
                     <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
                     <img src="/bootstrapred/img/icons/man.png" alt="">
                     <a href="#">
                         <img src="img/icons/bag.png" alt="">
-                        <span>2</span>
+                            <!--I NEED TO SESSION THE AUTHENTICATED USER HERE-->
                     </a>
                 </div>
                 <div class="user-access">
-                    <a href="#">Register</a>
-                    <a href="#" class="in">Sign in</a>
+                <a href="{{ route('register') }}">Register /</a>
+                          <a href="{{ route('login') }}">Login</a>
+             
                 </div>
                 <nav class="main-menu mobile-menu">
                     <ul>
                     <li> <a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('shop') }}">Shop</a>
+                    <li><a href="{{ route('category') }}">Shop</a>
                             <ul class="sub-menu">
                             <li><a href="{{ route('shop') }}">Product Page</a></li>
                                 <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
@@ -80,6 +79,7 @@
             </div>
         </div>
     </header>
+    <!-- Header Section Begin -->
     <!-- Header Info Begin -->
     <div class="header-info">
         <div class="container-fluid">

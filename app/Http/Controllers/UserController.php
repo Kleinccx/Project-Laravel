@@ -46,53 +46,44 @@ class UserController extends Controller
         return redirect('/login'); // Redirect to the login page if the request method is 'post'
     }
     public function login(Request $request)
-{
-    if ($request->isMethod('post')) {
-        // Handle login form submission
-        $credentials = $request->only('email', 'password');
-
-        // Validate the user input
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ], [
-            'email.required' => 'Email is required.',
-            'email.email' => 'Email is not valid.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password must be at least 8 characters long.',
-        ]);
-
-        // Check if the user exists in the database
-        $user = User::where('email', $validatedData['email'])->first();
-
-        if ($user && Hash::check($validatedData['password'], $user->password)) {
-            // Authentication successful
-            Auth::login($user);
-            return redirect()->intended('/'); // Redirect to the desired page after login
-        } else {
-            // Authentication failed
-            if (!$user) {
-                return back()->withErrors(['email' => 'Email is not valid or does not exist.']);
-            } else {
-                return back()->withErrors(['password' => 'Incorrect password.']);
+    {
+        if ($request->isMethod('post')) {
+            // Handle login form submission
+            $credentials = $request->only('email', 'password');
+    
+            // Validate the user input
+            $validatedData = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string|min:8',
+            ], [
+                'email.required' => 'Email is required.',
+                'email.email' => 'Email is not valid.',
+                'password.required' => 'Password is required.',
+                'password.min' => 'Password must be at least 8 characters long.',
+            ]);
+    
+            // Check if the user exists in the database
+            if (Auth::attempt($validatedData)) {
+                return redirect(route('index'))->with('success', 'Welcome, you are logged in');
             }
         }
-    } else {
-        // Show login form
+    
         return view('login');
     }
-}
-public function profile(Request $request)
-{
-    // Your login logic here
+        public function profile(request $request) {
+            return view ('profile');
+        }
 
-    // Assuming the user is authenticated successfully
-    $user = auth()->user();
-    return redirect()->route('index')->with('userName', $user->name);
-}
-
-public function carts()
-{
-    return $this->hasMany(Cart::class);
-}
-}
+        public function carts()
+        {
+            return $this->hasMany(Cart::class);
+        }
+        public function logout(Request $request)
+        {
+ 
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect('/login');
+        }
+        }

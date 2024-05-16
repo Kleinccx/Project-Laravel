@@ -9,8 +9,6 @@ class DatabaseSeeder extends Seeder
 {              
     public function run()
     {
-        \App\Models\User::factory(10)->create();
-
         // Create a specific product with different category IDs
         $products = [
             [
@@ -24,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'product_name' => 'Shirt For Men',
-                'description' => 'Stylish shirt for men',
+                'description' => 'Stylish shirt for men 1',
                 'price' => 250.00,
                 'quantity' => 50,
                 'imageUrl' => 'https://i.ebayimg.com/images/g/PdsAAOSwJ1xkrZAQ/s-l1600.jpg',

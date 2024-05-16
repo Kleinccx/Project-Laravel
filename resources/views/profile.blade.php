@@ -7,13 +7,11 @@
     <meta name="keywords" content="Yoga, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Violet | Template</title>
-
+    <title>Jarred's Style Haven</title>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
         rel="stylesheet">
-
     <!-- Css Styles -->
     <link rel="stylesheet" href="/bootstrapred/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/font-awesome.min.css" type="text/css">
@@ -23,7 +21,6 @@
     <link rel="stylesheet" href="/bootstrapred/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/style.css" type="text/css">
 </head>
-
 <body>
     <!-- Page Preloder -->
     <div id="preloder">
@@ -52,7 +49,7 @@
                     <img src="/bootstrapred/img/icons/man.png" alt="">
                     <a href="#">
                         <img src="img/icons/bag.png" alt="">
-                        <span>2</span>
+                            <!--I NEED TO SESSION THE AUTHENTICATED USER HERE-->
                     </a>
                 </div>
                 <div class="user-access">
@@ -78,182 +75,91 @@
             </div>
         </div>
     </header>
-    <!-- Header Info Begin -->
-    <div class="header-info">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="header-item">
-                        <img src="/bootstrapred/img/icons/delivery.png" alt="">
-                        <p>Free shipping on orders over $30 in USA</p>
-                    </div>
-                </div>
-                <div class="col-md-4 text-left text-lg-center">
-                    <div class="header-item">
-                        <img src="/bootstrapred/img/icons/voucher.png" alt="">
-                        <p>20% Student Discount</p>
-                    </div>
-                </div>
-                <div class="col-md-4 text-left text-xl-right">
-                    <div class="header-item">
-                    <img src="/bootstrapred/img/icons/sales.png" alt="">
-                    <p>30% off on dresses. Use code: 30OFF</p>
-                </div>
-                </div>
-            </div>
-        </div>
+
+    <section style="background-color: #eee;">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-4">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">User</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+          </ol>
+        </nav>
+      </div>
     </div>
-    <!-- Header Info End -->
-      <!-- Page Add Section Begin -->
-      <section class="page-add cart-page-add">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="page-breadcrumb">
-                        <h2>Cart<span>.</span></h2>
-                        <a href="{{route('index')}}">Home</a>
-                        <a href="{{route('cart.view')}}">Cart</a>
-               
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <img src="img/add.jpg" alt="">
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Page Add Section End -->
-    <!-- Header End -->
 
- <!-- Page Cart Section Begin -->
- <div class="cart-page">
-    <div class="container">
-        <div class="cart-table">
-            <table>
-                <thead>
-                    @if($cart_items instanceof Countable && count($cart_items) > 0)
-                    <tr>
-                        <th class="product-h">Product</th>
-                        <th>Price</th>
-                        <th class="quan">Quantity</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="cart-tbody">
-                    @foreach($cart_items as $item)
-                    <tr class="cart-item" data-item-id="{{ $item->id }}">
-                        <td class="product-col">
-                            <img src="{{ $item->product->imageUrl }}" alt="">
-                            <div class="p-title">
-                                <h5>{{ $item->product->product_name }}</h5>
-                            </div>
-                        </td>
-                        <td class="price-col">{{ $item->price }}</td>
-                        <td class="quantity-col">
-                            {{ $item->product->quantity }}
-                        </td>
-                        <td class="product-close"><span class="remove-item">x</span></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                @else
-                <p>Your cart is empty.</p>
-                @endif
-            </table>
-        </div>
-        <div class="cart-btn">
-            <div class="row">
-                <div class="col-lg-6">
-
-                </div>
-                <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
-                    <div class="site-btn clear-btn">Clear Cart</div>
-                    <div class="site-btn update-btn"> Checkout</div>
-                </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px;">
+            <h5 class="my-3">John Smith</h5>
+            <p class="text-muted mb-1">Full Stack Developer</p>
+            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+            <div class="d-flex justify-content-center mb-2">
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
+              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
             </div>
+          </div>
         </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Johnatan Smith</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">example@example.com</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Phone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(097) 234-5678</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">(098) 765-4321</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+      </div>
     </div>
-</div>
-<script>
-    // Add event listener to quantity input and buttons
-document.querySelectorAll('.quantity-input, .qtybtn').forEach(element => {
-    element.addEventListener('click', function() {
-        const quantityInput = this.closest('.pro-qty').querySelector('.quantity-input');
-        let quantity = parseInt(quantityInput.value);
-        const itemId = this.closest('.cart-item').dataset.itemId;
-
-        // Update the quantity input value
-        if (this.classList.contains('inc')) {
-            quantity = quantity + 1;
-            quantityInput.value = quantity;
-            updateCartItem(itemId, quantity);
-        } else if (this.classList.contains('dec')) {
-            quantity = quantity - 1;
-            if (quantity < 1) {
-                // Remove the item from the cart
-                removeCartItem(itemId);
-                return;
-            }
-            quantityInput.value = quantity;
-            updateCartItem(itemId, quantity);
-        }
-    });
-});
-
-// Function to update the cart item
-function updateCartItem(itemId, quantity) {
-    // Make an AJAX request to update the item quantity on the server
-    fetch(`/cart/update/${itemId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({ quantity: quantity })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(`Updating item with ID ${itemId} to quantity ${quantity}.`);
-        updateCartTotal();
-    })
-    .catch(error => {
-        console.error('Error updating cart item:', error);
-    });
-}
-
-// Function to remove an item from the cart
-function removeCartItem(itemId) {
-    // Make an AJAX request to remove the item from the cart on the server
-    fetch(`/cart/remove/${itemId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(`Removing item with ID ${itemId} from the cart.`);
-
-        // Remove the corresponding table row
-        const cartItem = document.querySelector(`.cart-item[data-item-id="${itemId}"]`);
-        cartItem.remove();
-
-        updateCartTotal();
-    })
-    .catch(error => {
-        console.error('Error removing cart item:', error);
-    });
-}
-
-// Function to update the cart total
-function updateCartTotal() {
-    // Your implementation to update the cart total
-    console.log('Updating the cart total.');
-}
-</script>
-<!-- Cart Page Section End -->
-
+  </div>
+</section>
     <!-- Footer Section Begin -->
     <footer class="footer-section spad">
         <div class="container">
@@ -332,12 +238,13 @@ function updateCartTotal() {
 				</div>
 			</div>
 
-
-            <div class="container text-center pt-5">
+<div class="container text-center pt-5">
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
   Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
+
+
 		</div>
     </footer>
     <!-- Footer Section End -->
@@ -354,3 +261,4 @@ function updateCartTotal() {
 </body>
 
 </html>
+

@@ -9,13 +9,6 @@ use App\Models\User;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-     $products = Product::all();
-     $users = User::all();
-     return view ('index')->with('products', $products)->with('users',$users);
-    }
-
     public function productDetails($id)
     {
         $product = Product::find($id);
@@ -38,7 +31,6 @@ class ProductController extends Controller
             'imageUrl' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
 
     ]);
-
             $product = new Product;
             $product->product_name = $validatedData['product_name'];
             $product->price = $validatedData['price'];
@@ -55,8 +47,8 @@ class ProductController extends Controller
 
             $product->save();
 
-    return redirect()->route('index')->with('success', 'Product added successfully');
-}
+            return redirect()->route('index')->with('success', 'Product added successfully');
+            }
         public function shop()
         {
             $products = Product::all();
@@ -64,8 +56,6 @@ class ProductController extends Controller
 
             return view('shop', compact('products', 'users'));
         }
-
-
         public function category()
         {
             $products = Product::all();

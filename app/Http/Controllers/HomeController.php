@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
 
-
 class HomeController extends Controller
 {
     /**
@@ -15,10 +14,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $authUser = Auth::user();
-        $products = Product::all();
-        $users = User::all();
-    
-        return view('index', compact('authUser', 'products', 'users'));
+     $products = Product::all();
+     $users = User::all();
+     return view ('index')->with('products', $products)->with('users',$users);
     }
 }
