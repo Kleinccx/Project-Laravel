@@ -11,8 +11,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="/bootstrapred/css/bootstrap.min.css" type="text/css">
@@ -43,42 +43,56 @@
 
     <!-- Header Section Begin -->
     <header class="header-section">
-        <div class="container-fluid">
-            <div class="inner-header">
-                <div class="logo">
-                <img src="/bootstrapred/img/jarlogo.png" alt="" width="150" height="50">
-                </div>
-                <div class="header-right">
-                    <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
-                    <img src="/bootstrapred/img/icons/man.png" alt="">
-                    <a href="#">
-                        <img src="img/icons/bag.png" alt="">
-                        <span>2</span>
-                    </a>
-                </div>
-                <div class="user-access">
-                <a href="{{ route('register') }}">Register /</a>
-                          <a href="{{ route('login') }}">Login</a>
-             
-                </div>
-                <nav class="main-menu mobile-menu">
-                    <ul>
-                    <li> <a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('category') }}">Shop</a>
-                            <ul class="sub-menu">
-                            <li><a href="{{ route('shop') }}">Product Page</a></li>
-                                <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                                <li><a href="check-out.html">Check out</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./product-page.html">About</a></li>
-                        <li><a href="./check-out.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                    </ul>
-                </nav>
+    <div class="container-fluid">
+        <div class="inner-header">
+            <div class="logo">
+                <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
             </div>
+            <div class="header-right">
+            <span>{{ auth()->user()->name }}</span>
+                @if (auth()->check())
+                    <a href="{{ route('profile') }}">
+                        <img src="/bootstrapred/img/icons/man.png" alt="">
+                    </a>
+
+                    <a href="{{ route('cart.view') }}">
+                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0" style="color: black;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                @else
+                @guest
+                    <div class="user-access">
+                        <a href="{{ route('register') }}">Register /</a>
+                        <a href="{{ route('login') }}">Login</a>
+                    </div>
+                    @endguest
+                @endif
+            </div>
+            <nav class="main-menu mobile-menu">
+                <ul>
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li>
+                        <a href="{{ route('category') }}">Shop</a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
+                            <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
+                            <li><a href="check-out.html">Check out</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="./check-out.html">Blog</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-    </header>
+    </div>
+</header>
 
 
     <h1> TO BE CONTINUED... </h1>

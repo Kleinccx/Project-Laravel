@@ -11,8 +11,8 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="/bootstrapred/css/bootstrap.min.css" type="text/css">
@@ -43,42 +43,56 @@
 
     <!-- Header Section Begin -->
     <header class="header-section">
-        <div class="container-fluid">
-            <div class="inner-header">
-                <div class="logo">
+    <div class="container-fluid">
+        <div class="inner-header">
+            <div class="logo">
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
-                </div>
-                <div class="header-right">
-                    <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
-                    <img src="/bootstrapred/img/icons/man.png" alt="">
-                    <a href="#">
-                        <img src="img/icons/bag.png" alt="">
-                            <!--I NEED TO SESSION THE AUTHENTICATED USER HERE-->
-                    </a>
-                </div>
-                <div class="user-access">
-                <a href="{{ route('register') }}">Register /</a>
-                          <a href="{{ route('login') }}">Login</a>
-             
-                </div>
-                <nav class="main-menu mobile-menu">
-                    <ul>
-                    <li> <a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('category') }}">Shop</a>
-                            <ul class="sub-menu">
-                            <li><a href="{{ route('shop') }}">Product Page</a></li>
-                                <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                                <li><a href="check-out.html">Check out</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="./check-out.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                    </ul>
-                </nav>
             </div>
+            <div class="header-right">
+            <span>{{ auth()->user()->name }}</span>
+                @if (auth()->check())
+                    <a href="{{ route('profile') }}">
+                        <img src="/bootstrapred/img/icons/man.png" alt="">
+                    </a>
+
+                    <a href="{{ route('cart.view') }}">
+                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0" style="color: black;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                @else
+                @guest
+                    <div class="user-access">
+                        <a href="{{ route('register') }}">Register /</a>
+                        <a href="{{ route('login') }}">Login</a>
+                    </div>
+                    @endguest
+                @endif
+            </div>
+            <nav class="main-menu mobile-menu">
+                <ul>
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li>
+                        <a href="{{ route('category') }}">Shop</a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
+                            <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
+                            <li><a href="check-out.html">Check out</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="./check-out.html">Blog</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-    </header>
+    </div>
+</header>
     <!-- Header Section Begin -->
     <!-- Header Info Begin -->
     <div class="header-info">
@@ -169,81 +183,124 @@
 <!-- Related Product Section End -->
 
 <script>
- addToCartForms.forEach(form => {
-    form.addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the default form submission
-        console.log('Form submitted');
+       document.addEventListener('DOMContentLoaded', function() {
+       var addToCartForms = document.querySelectorAll('.add-to-cart-form');
 
-        const productId = event.target.querySelector('.add-to-cart-btn').dataset.productId;
-        console.log('Product ID:', productId);
+            addToCartForms.forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
 
-        // Make a POST request to the cart/add/{id} route
-        fetch(`/cart/${productId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                var formData = new FormData(this);
+                var productId = this.querySelector('.add-to-cart-btn').dataset.productId;
+
+                fetch('{{ route("addToCart", ["id" => ":id"]) }}'.replace(':id', productId), {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                    showSuccessAnimation('Product added to cart successfully!');
+                    } else {
+                    showErrorAnimation('There was an error adding the product to the cart.');
+                    }
+                })
+                .catch(function(error) {
+                    showErrorAnimation('An error occurred. Please try again later.');
+                });
+                });
+            });
+
+            function showSuccessAnimation(message) {
+                var successContainer = document.createElement('div');
+                successContainer.classList.add('success-animation-container');
+
+                var checkmarkContainer = document.createElement('div');
+                checkmarkContainer.classList.add('checkmark-container');
+
+                var checkmark = document.createElement('div');
+                checkmark.classList.add('checkmark');
+
+                var messageElement = document.createElement('p');
+                messageElement.textContent = message;
+
+                checkmarkContainer.appendChild(checkmark);
+                successContainer.appendChild(checkmarkContainer);
+                successContainer.appendChild(messageElement);
+                document.body.appendChild(successContainer);
+
+                // Add the 'animate' class after a short delay to start the animation
+                setTimeout(function() {
+                checkmarkContainer.classList.add('animate');
+                }, 100);
+
+                // Remove the success animation container after 3 seconds
+                setTimeout(function() {
+                document.body.removeChild(successContainer);
+                }, 3000);
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Handle the response from the server
-            console.log(data);
-            if (data.success) {
-                // Display the success modal
-                const modal = document.createElement('div');
-                modal.classList.add('modal', 'fade');
-                modal.setAttribute('id', 'successModal');
-                modal.setAttribute('tabindex', '-1');
-                modal.setAttribute('role', 'dialog');
-                modal.setAttribute('aria-labelledby', 'successModalLabel');
-                modal.setAttribute('aria-hidden', 'true');
 
-                const modalDialog = document.createElement('div');
-                modalDialog.classList.add('modal-dialog', 'modal-dialog-centered');
-
-                const modalContent = document.createElement('div');
-                modalContent.classList.add('modal-content');
-
-                const modalHeader = document.createElement('div');
-                modalHeader.classList.add('modal-header');
-
-                const modalTitle = document.createElement('h5');
-                modalTitle.classList.add('modal-title');
-                modalTitle.setAttribute('id', 'successModalLabel');
-                modalTitle.textContent = 'Success!';
-
-                const closeButton = document.createElement('button');
-                closeButton.classList.add('close');
-                closeButton.setAttribute('type', 'button');
-                closeButton.setAttribute('data-dismiss', 'modal');
-                closeButton.setAttribute('aria-label', 'Close');
-                closeButton.innerHTML = '<span aria-hidden="true">&times;</span>';
-
-                const modalBody = document.createElement('div');
-                modalBody.classList.add('modal-body');
-                modalBody.textContent = 'Product added to cart successfully!';
-
-                modalHeader.appendChild(modalTitle);
-                modalHeader.appendChild(closeButton);
-                modalContent.appendChild(modalHeader);
-                modalContent.appendChild(modalBody);
-                modalDialog.appendChild(modalContent);
-                modal.appendChild(modalDialog);
-
-                document.body.appendChild(modal);
-
-                // Show the modal
-                $('#successModal').modal('show');
+            function showErrorAnimation(message) {
+                // You can implement a similar error animation if needed
             }
-        })
-        .catch(error => {
-            // Handle any errors
-            console.error(error);
-        });
-    });
-});
-</script>
+            });
+            </script>
+        <style>
+        .success-animation-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #ffffff;
+        color: #4CAF50;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        z-index: 9999;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        }
+
+        .checkmark-container {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: #4CAF50;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        }
+
+        .checkmark {
+        width: 36px;
+        height: 36px;
+        border-right: 4px solid #ffffff;
+        border-bottom: 4px solid #ffffff;
+        transform: rotate(45deg);
+        opacity: 0;
+        }
+
+        .checkmark-container.animate .checkmark {
+        animation: checkmarkAnimation 0.5s ease-in-out forwards;
+        }
+
+        @keyframes checkmarkAnimation {
+        0% {
+            opacity: 0;
+            transform: rotate(45deg) scale(0.5);
+        }
+        100% {
+            opacity: 1;
+            transform: rotate(45deg) scale(1);
+        }
+        }
+            </style>
 
     <!-- Footer Section Begin -->
     <footer class="footer-section spad">
@@ -359,6 +416,10 @@
     </style>
 
     <!-- Js Plugins -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script src="/bootstrapred/js/jquery-3.3.1.min.js"></script>
     <script src="/bootstrapred/js/bootstrap.min.js"></script>
     <script src="/bootstrapred/js/jquery.magnific-popup.min.js"></script>

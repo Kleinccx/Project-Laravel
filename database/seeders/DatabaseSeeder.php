@@ -127,4 +127,5 @@ class DatabaseSeeder extends Seeder
             Product::create($productData);
         }
     }
+    
 }

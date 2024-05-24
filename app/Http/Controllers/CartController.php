@@ -16,6 +16,7 @@ public function addToCart(Request $request, $id)
 {
     $product = Product::findOrFail($id);
     $user = auth()->user();
+   
 
     // Check if the product is already in the user's cart
     $cartItem = $user->carts()->where('product_id', $id)->first();
@@ -51,4 +52,53 @@ public function view()
 
     return view('cart', compact('cart_items', 'total'));
 }
+public function updateQuantity(Request $request)
+{
+    $itemId = $request->input('id'); // Assuming the item ID is passed with the name 'id'
+    $quantity = $request->input('quantity'); // Assuming the quantity is passed with the name 'quantity'
+
+    try {
+        // Validate the input
+        if (!is_numeric($quantity) || $quantity < 1) {
+            throw new \Exception('Invalid quantity value.');
+        }
+
+        // Find the cart item or fail
+        $cartItem = CartItem::findOrFail($itemId);
+
+        // Update the quantity
+        $cartItem->quantity = $quantity;
+        $cartItem->save();
+
+        return response()->json(['success' => true, 'quantity' => $quantity]);
+    } catch (\Exception $e) {
+        // Log the error message for debugging purposes
+        \Log::error('Error updating cart item quantity:', ['error' => $e->getMessage()]);
+
+        // Return a JSON response with the error message
+        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
+public function checkout(Request $request)
+{
+    // Get the current user
+    $user = $request->user();
+
+    // Get the user's cart items
+    $cartItems = $user->carts()->with('product')->get();
+
+    // Calculate the total amount
+    $totalAmount = $cartItems->sum(function ($item) {
+        return $item->product->price * $item->quantity;
+    });
+
+    // Pass the cart items and total amount to the checkout view
+    return view('checkout', [
+        'cartItems' => $cartItems,
+        'totalAmount' => $totalAmount,
+    ]);
+}
+
+
+
 }

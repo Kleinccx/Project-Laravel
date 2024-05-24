@@ -26,44 +26,56 @@
 </head>
 <body>
     <!-- Header Section Begin -->
-  <header class="header-section">
-        <div class="container-fluid">
-            <div class="inner-header">
-                <div class="logo">
+    <header class="header-section">
+    <div class="container-fluid">
+        <div class="inner-header">
+            <div class="logo">
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
-                </div>
-                <div class="header-right">
-                    <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
-                    <img src="/bootstrapred/img/icons/man.png" alt="">
-                    <a href="#">
-                        <img src="img/icons/bag.png" alt="">
-                        <span>2</span>
-                    </a>
-                </div>
-                <div class="user-access">
-                <a href="{{ route('register') }}">Register /</a>
-                          <a href="{{ route('login') }}">Login</a>
-             
-                </div>
-                <nav class="main-menu mobile-menu">
-                    <ul>
-                    <li> <a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('category') }}">Shop</a>
-                            <ul class="sub-menu">
-                            <li><a href="{{ route('shop') }}">Product Page</a></li>
-                                <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                                <li><a href="check-out.html">Check out</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="./check-out.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                    </ul>
-                </nav>
             </div>
-        </div>
-    </header>
+            <div class="header-right">
+                @if (auth()->check())
+                    <a href="{{ route('profile') }}">
+                        <img src="/bootstrapred/img/icons/man.png" alt="">
+                    </a>
 
+                    <a href="{{ route('cart.view') }}">
+                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0" style="color: black;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                @else
+                @guest
+                    <div class="user-access">
+                        <a href="{{ route('register') }}">Register /</a>
+                        <a href="{{ route('login') }}">Login</a>
+                    </div>
+                    @endguest
+                @endif
+            </div>
+            <nav class="main-menu mobile-menu">
+                <ul>
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li>
+                        <a href="{{ route('category') }}">Shop</a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
+                            <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
+                            <li><a href="check-out.html">Check out</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="./check-out.html">Blog</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
       <!-- Header Info Begin -->
       <div class="header-info">
         <div class="container-fluid">
@@ -126,10 +138,18 @@
                                 <label class="label" for="password_confirmation">Confirm Password</label>
                                 <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
                             </div>
+                            <div class="form-group">
+                                <label class="label" for="mobile">Mobile Number</label>
+                                <input type="tel" id="mobile_number" name="mobile_number" class="form-control" placeholder="Mobile Number" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="label" for="address">Address</label>
+                                <textarea id="address" name="address" class="form-control" placeholder="Address" required></textarea>
+                            </div>
                             <div class="form-group actions">
                                 <button type="submit">Register</button>
-                           
                             </div>
+                        </form>
                             <div class="form-group d-md-flex">
                                 <div class="w-50 text-left">
                                     <label class="checkbox-wrap checkbox-primary mb-0">

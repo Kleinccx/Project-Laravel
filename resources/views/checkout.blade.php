@@ -6,8 +6,9 @@
     <meta name="description" content="Yoga Studio Template">
     <meta name="keywords" content="Yoga, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Jarred's Style Haven</title>
+    <title>Violet | Template</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
@@ -22,11 +23,6 @@
     <link rel="stylesheet" href="/bootstrapred/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/style.css" type="text/css">
-    <head>
-  <!-- Other head elements -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-</head>
 </head>
 
 <body>
@@ -35,7 +31,7 @@
         <div class="loader"></div>
     </div>
     
-   <!-- Search model -->
+    <!-- Search model -->
 	<div class="search-model">
 		<div class="h-100 d-flex align-items-center justify-content-center">
 			<div class="search-close-switch">+</div>
@@ -45,18 +41,16 @@
 		</div>
 	</div>
 	<!-- Search model end -->
-
     <!-- Header Section Begin -->
-     <!-- Header Section Begin -->
-     <header class="header-section">
+    <header class="header-section">
     <div class="container-fluid">
         <div class="inner-header">
             <div class="logo">
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
             </div>
             <div class="header-right">
-            <span>{{ auth()->user()->name }}</span>
                 @if (auth()->check())
+                <span>{{ auth()->user()->name }}</span>
                     <a href="{{ route('profile') }}">
                         <img src="/bootstrapred/img/icons/man.png" alt="">
                     </a>
@@ -106,7 +100,7 @@
                 <div class="col-md-4">
                     <div class="header-item">
                         <img src="/bootstrapred/img/icons/delivery.png" alt="">
-                        <p>Free shipping, Order Now!</p>
+                        <p>Free shipping on orders over $30 in USA</p>
                     </div>
                 </div>
                 <div class="col-md-4 text-left text-lg-center">
@@ -118,153 +112,90 @@
                 <div class="col-md-4 text-left text-xl-right">
                     <div class="header-item">
                     <img src="/bootstrapred/img/icons/sales.png" alt="">
-                    <p>25% Off on Polo Shirts</p>
+                    <p>30% off on dresses. Use code: 30OFF</p>
                 </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Header Info End -->
-    <!-- Header End -->
-
-    <!-- Page Add Section Begin -->
-    <section class="page-add">
+      <!-- Page Add Section Begin -->
+      <section class="page-add cart-page-add">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
-                <div class="page-breadcrumb">
-                    <h2 style="display: inline-block;">Embrace</h2></div>
-                    <h3 style="display: inline-block;">Fashion Diversity</h3></div>
-                      <!--  <a href="{{ route('index') }}">Home</a> -->
-                      <style>
-    h2 {
-      text-align: center;
-      font-size: 24px;
-      color: #333;
-      background-color: #f9f9f9;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+                    <div class="page-breadcrumb">
+                        <h2>Checkout<span>.</span></h2>
+                        <a href="{{route('index')}}">Home</a>
+                        <a href="{{route('checkout')}}">Checkout</a>
+               
                     </div>
+                </div>
+                <div class="col-lg-8">
+                    <img src="img/add.jpg" alt="">
+                </div>
             </div>
         </div>
     </section>
     <!-- Page Add Section End -->
+    <!-- Header End -->
 
-    <!-- Categories Page Section Begin -->
-    <section class="categories-page spad">
+ <!-- Page Cart Section Begin -->
+ <div class="cart-page">
     <div class="container">
-        <div class="categories-controls">
+        <div class="cart-table">
+            <table>
+                <thead>
+               
+                    <tr>
+                        <th class="product-h">Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="cart-tbody">
+                @foreach ($cartItems as $item)
+                    <tr class="cart-item" data-item-id="{{ $item->id }}">
+            <td class="product-col">
+                <img src="{{ $item->product->imageUrl }}" alt="">
+                <div class="p-title">
+                    <h5>{{ $item->product->product_name }}</h5>
+                </div>
+            </td>
+            <td class="price-col">{{ $item->price }}</td>
+            <td class="quantity-col">
+          
+                <span style>{{$item->quantity}}</span>
+            </td>
+            <td>{{ $item->quantity * $item->product->price }}</td>
+        </tr>
+                    @endforeach
+                </tbody>
+
+          
+     
+            </table>
+        </div>
+        <div class="cart-btn">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="categories-filter">
-                        <div class="cf-left">
-                            <form>
-                                <select id="categoryFilter">
-                                    <option value="">Sort by</option>
-                                    <option value="1">Pants</option>
-                                    <option value="2">Shirts</option>
-                                    <option value="3">Longsleeves</option>
-                                    <option value="4">Poloshirts</option>
-                                </select>
-                            </form>
-                        </div>
-                        <div class="cf-right">
-                            <span id="productCount"></span>
-                            <a href="#"></a>
-                            <a href="#" class="active"></a>
-                            <a href="#"></a>
-                        </div>
-                    </div>
+                <div class="col-lg-6">
+
+                </div>
+                <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
+                    <div class="site-btn clear-btn">BACK</div>
+                    <a href="{{ route('checkout') }}" class="site-btn update-btn">Confirm</a>
                 </div>
             </div>
         </div>
-        <div class="row" id="productList">
-            @foreach($products as $product)
-                <div class="col-lg-6 col-md-6 product-item" data-category-id="{{ $product->category_id }}">
-                    <div class="single-product-item">
-                      <figure>
-                        <a href="{{ $product->imageUrl }}" data-lightbox="product-images" data-title="{{ $product->product_name }}">
-                            <div class="p-status">{{$product->product_status}}</div>
-                            <img src="{{ $product->imageUrl }}" alt="">
-                        </a>
-                            <div class="hover-icon">
-                                <!-- Hover icon content goes here -->
-                            </div>
-                        </figure>
-                        <div class="product-text">
-                           <strong><h6>{{ $product->product_name }}</h6></strong> 
-                            <h6>{{ $product->description }}</h6>
-                            <p>${{ $product->price }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
     </div>
-</section>
-<!-- Other head elements -->
-<script src="https://cdn.jsdelivr.net/npm/zoomooz/dist/zoomooz.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    lightbox.option({
-      'resizeDuration': 200,
-      'fadeDuration': 300,
-      'wrapAround': true
-    });
-  });
-</script>
+</div>
+ 
 
-<script>
-    // Get the category filter select element
-    const categoryFilter = document.getElementById('categoryFilter');
 
-    // Get the product list container element
-    const productList = document.getElementById('productList');
 
-    // Get the product count element
-    const productCount = document.getElementById('productCount');
-
-    // Add event listener for category filter change
-    categoryFilter.addEventListener('change', function() {
-        // Get the selected category ID
-        const selectedCategoryId = categoryFilter.value;
-
-        // Filter and display products based on the selected category ID
-        filterProducts(selectedCategoryId);
-    });
-
-    // Function to filter and display products based on the category ID
-    function filterProducts(categoryId) {
-        // Get all product items
-        const productItems = productList.getElementsByClassName('product-item');
-
-        // Initialize a counter for the matching products
-        let matchingProductCount = 0;
-
-        // Loop through each product item
-        for (let i = 0; i < productItems.length; i++) {
-            const productItem = productItems[i];
-
-            // Get the category ID of the product item
-            const itemCategoryId = productItem.getAttribute('data-category-id');
-
-            // Show/hide the product item based on the category ID
-            if (categoryId === '' || itemCategoryId === categoryId) {
-                productItem.style.display = 'block';
-                matchingProductCount++;
-            } else {
-                productItem.style.display = 'none';
-            }
-        }
-
-        // Update the product count
-        productCount.textContent = matchingProductCount + ' Product' + (matchingProductCount !== 1 ? 's' : '');
-    }
-</script>
-    <!-- Categories Page Section End -->
+<!-- Cart Page Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer-section spad">
@@ -344,13 +275,12 @@
 				</div>
 			</div>
 
-<div class="container text-center pt-5">
+
+            <div class="container text-center pt-5">
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
   Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
             </div>
-
-
 		</div>
     </footer>
     <!-- Footer Section End -->

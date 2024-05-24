@@ -64,3 +64,14 @@ Route::view('/about', 'about')->name('about');
 //User profile Route
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 
+//Logout user
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+Route::post('/cart/update-quantity', 'CartController@updateQuantity')->name('cart.update-quantity');
+
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
+
+
+
+

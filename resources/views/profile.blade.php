@@ -10,8 +10,8 @@
     <title>Jarred's Style Haven</title>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Css Styles -->
     <link rel="stylesheet" href="/bootstrapred/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/font-awesome.min.css" type="text/css">
@@ -39,43 +39,56 @@
 	<!-- Search model end -->
     <!-- Header Section Begin -->
     <header class="header-section">
-        <div class="container-fluid">
-            <div class="inner-header">
-                <div class="logo">
+    <div class="container-fluid">
+        <div class="inner-header">
+            <div class="logo">
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
-                </div>
-                <div class="header-right">
-                    <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
-                    <img src="/bootstrapred/img/icons/man.png" alt="">
-                    <a href="#">
-                        <img src="img/icons/bag.png" alt="">
-                            <!--I NEED TO SESSION THE AUTHENTICATED USER HERE-->
-                    </a>
-                </div>
-                <div class="user-access">
-                <a href="{{ route('register') }}">Register /</a>
-                          <a href="{{ route('login') }}">Login</a>
-             
-                </div>
-                <nav class="main-menu mobile-menu">
-                    <ul>
-                    <li> <a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('category') }}">Shop</a>
-                            <ul class="sub-menu">
-                            <li><a href="{{ route('shop') }}">Product Page</a></li>
-                                <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                                <li><a href="check-out.html">Check out</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="./check-out.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                    </ul>
-                </nav>
             </div>
-        </div>
-    </header>
+            <div class="header-right">
+                @if (auth()->check())
+                <span>{{ auth()->user()->name }}</span>
+                    <a href="{{ route('profile') }}">
+                        <img src="/bootstrapred/img/icons/man.png" alt="">
+                    </a>
 
+                    <a href="{{ route('cart.view') }}">
+                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0" style="color: black;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                @else
+                @guest
+                    <div class="user-access">
+                        <a href="{{ route('register') }}">Register /</a>
+                        <a href="{{ route('login') }}">Login</a>
+                    </div>
+                    @endguest
+                @endif
+            </div>
+            <nav class="main-menu mobile-menu">
+                <ul>
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li>
+                        <a href="{{ route('category') }}">Shop</a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
+                            <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
+                            <li><a href="check-out.html">Check out</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="./check-out.html">Blog</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
     <section style="background-color: #eee;">
   <div class="container py-5">
     <div class="row">
@@ -96,9 +109,9 @@
           <div class="card-body text-center">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
               class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">John Smith</h5>
-            <p class="text-muted mb-1">Full Stack Developer</p>
-            <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+            <h5 class="my-3">{{ auth()->user()->name }}</h5>
+            <p class="text-muted mb-1">{{ auth()->user()->email }}</p>
+            <p class="text-muted mb-4">{{ auth()->user()->address }}</p>
             <div class="d-flex justify-content-center mb-2">
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
@@ -107,55 +120,63 @@
         </div>
       </div>
       <div class="col-lg-8">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Full Name</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Johnatan Smith</p>
-              </div>
+      <div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Name</p>
             </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Email</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">example@example.com</p>
-              </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ auth()->user()->name }}</p>
             </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Phone</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">(097) 234-5678</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Mobile</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">(098) 765-4321</p>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Address</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-              </div>
-            </div>
-          </div>
         </div>
-       
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ auth()->user()->email }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ auth()->user()->mobile_number }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ auth()->user()->address }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Created At</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ auth()->user()->created_at }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Updated At</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ auth()->user()->updated_at }}</p>
+            </div>
+        </div>
+    </div>
+</div>
       </div>
     </div>
   </div>

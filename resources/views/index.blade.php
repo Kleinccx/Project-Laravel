@@ -19,10 +19,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Jarred's Style Haven</title>
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <!-- Css Styles -->
     <link rel="stylesheet" href="/bootstrapred/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/font-awesome.min.css" type="text/css">
@@ -31,6 +33,11 @@
     <link rel="stylesheet" href="/bootstrapred/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/style.css" type="text/css">
+    <head>
+  <!-- Other head elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+</head>
 </head>
 <body>
     <!-- Page Preloder -->
@@ -50,44 +57,56 @@
 	<!-- Search model end -->
     <!-- Header Section Begin -->
     <header class="header-section">
-        <div class="container-fluid">
-            <div class="inner-header">
-                <div class="logo">
+    <div class="container-fluid">
+        <div class="inner-header">
+            <div class="logo">
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
-                </div>
-                <div class="header-right">
-                {{ auth()->user()->name }}
-                    <a href="{{ route('profile') }}">
-                    <img src="/bootstrapred/img/icons/man.png" alt="">
-                    
-                </a>
-                <br> 
-                    <a href="#">
-                        <img src="img/icons/bag.png" alt="" >      
-                    </a>
-                </div>
-                <div class="user-access">
-                <a href="{{ route('register') }}">Register /</a>
-                          <a href="{{ route('login') }}">Login</a>
-                </div>
-                <nav class="main-menu mobile-menu">
-                    <ul>
-                    <li> <a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('category') }}">Shop</a>
-                            <ul class="sub-menu">
-                            <li><a href="{{ route('shop') }}">Product Page</a></li>
-                                <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                                <li><a href="check-out.html">Check out</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="./check-out.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                    </ul>
-                </nav>
             </div>
+            <div class="header-right">
+                @if (auth()->check())
+                <span>{{ auth()->user()->name }}</span>
+                    <a href="{{ route('profile') }}">
+                        <img src="/bootstrapred/img/icons/man.png" alt="">
+                    </a>
+
+                    <a href="{{ route('cart.view') }}">
+            <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0" style="color: black;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                @else
+                @guest
+                    <div class="user-access">
+                        <a href="{{ route('register') }}">Register /</a>
+                        <a href="{{ route('login') }}">Login</a>
+                    </div>
+                    @endguest
+                @endif
+            </div>
+            <nav class="main-menu mobile-menu">
+                <ul>
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li>
+                        <a href="{{ route('category') }}">Shop</a>
+                        <ul class="sub-menu">
+                            <li><a href="{{ route('shop') }}">Product Page</a></li>
+                            <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
+                            <li><a href="check-out.html">Check out</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ route('about') }}">About</a></li>
+                    <li><a href="./check-out.html">Blog</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-    </header>
+    </div>
+</header>
     <!-- Header Info Begin -->
     <div class="header-info">
         <div class="container-fluid">
@@ -369,6 +388,7 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
+    
     <script src="/bootstrapred/js/jquery-3.3.1.min.js"></script>
     <script src="/bootstrapred/js/bootstrap.min.js"></script>
     <script src="/bootstrapred/js/jquery.magnific-popup.min.js"></script>

@@ -31,18 +31,26 @@
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
                 </div>
                 <div class="header-right">
-                    <img src="/bootstrapred/img/icons/search.png" alt="" class="search-trigger">
-                    <img src="/bootstrapred/img/icons/man.png" alt="">
-                    <a href="#">
-                        <img src="img/icons/bag.png" alt="">
-                        <span>2</span>
-                    </a>
+            <a href="{{ route('profile') }}">
+              <img src="/bootstrapred/img/icons/man.png" alt="">
+            </a>
+            <a href="{{ route('cart.view') }}">
+              <img src="/bootstrapred/img/icons/bag.png" alt="">
+            </a>
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+            @csrf
+            <button type="submit" class="btn btn-link p-0" style="color: black;">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </form>
+         </form>
                 </div>
-                <div class="user-access">
-                <a href="{{ route('register') }}">Register /</a>
-                          <a href="{{ route('login') }}">Login</a>
-             
-                </div>
+                @guest
+          <div class="user-access">
+            <a href="{{ route('register') }}">Register /</a>
+            <a href="{{ route('login') }}">Login</a>
+          </div>
+          @endguest
                 <nav class="main-menu mobile-menu">
                     <ul>
                     <li> <a href="{{ route('index') }}">Home</a></li>
@@ -85,6 +93,8 @@
             </div>
         </div>
     </div>
+
+
 
     <section class="ftco-section">
       <div class="container">

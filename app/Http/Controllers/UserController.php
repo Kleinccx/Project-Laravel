@@ -8,43 +8,34 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
-    public function register(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8|confirmed',
-            ], [
-                'name.required' => 'The name field is required.',
-                'email.required' => 'The email field is required.',
-                'email.email' => 'The email must be a valid email address.',
-                'email.unique' => 'The email has already been taken.',
-                'password.required' => 'The password field is required.',
-                'password.min' => 'The password must be at least 8 characters.',
-                'password.confirmed' => 'The password confirmation does not match.',
-            ]);
-    
-            $user = User::create([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']),
-            ]);
-    
-            // Additional actions after user creation, such as sending email confirmation, etc.
-    
-            // Show success pop-up message
-            echo "<script>
-                Swal.fire('Registration Successful', 'You have been successfully registered.', 'success').then(function() {
-                    window.location.href = '/login'; // Redirect to the login page after the pop-up is closed
-                });
-            </script>";
-        } else {
-            // Show create account form
-            return view('register');
-        }
-        return redirect('/login'); // Redirect to the login page if the request method is 'post'
+  public function register(Request $request)
+{
+    if ($request->isMethod('post')) {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'mobile_number' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+        ], [
+            // Error messages
+        ]);
+
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => bcrypt($validatedData['password']),
+            'mobile_number' => $validatedData['mobile_number'],
+            'address' => $validatedData['address'],
+        ]);
+
+        // Show success message and redirect to login page
+        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+    } else {
+        // Show create account form
+        return view('register');
     }
+}
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -86,4 +77,40 @@ class UserController extends Controller
             $request->session()->regenerateToken();
             return redirect('/login');
         }
+        public function showProfile()
+        {
+            if (auth()->check()) {
+                $user = auth()->user();
+                return view('profile.show', compact('user'));
+            } else {
+                // Redirect or display an error message if the user is not authenticated
+                return redirect()->route('login');
+            }
         }
+
+            /**
+             * Show the form for editing the user's profile.
+             *
+             * @return \Illuminate\View\View
+             */
+            public function editProfile()
+            {
+                $user = Auth::user();
+                return view('profile.edit', compact('user'));
+            }
+
+            /**
+             * Update the user's profile.
+             *
+             * @param  \Illuminate\Http\Request  $request
+             * @return \Illuminate\Http\RedirectResponse
+             */
+            public function updateProfile(Request $request)
+            {
+                $user = Auth::user();
+                $user->update($request->all());
+                return redirect()->route('profile.show');
+            }
+            
+                
+                }
