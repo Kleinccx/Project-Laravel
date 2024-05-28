@@ -36,31 +36,45 @@ class UserController extends Controller
         return view('register');
     }
 }
-    public function login(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            // Handle login form submission
-            $credentials = $request->only('email', 'password');
-    
-            // Validate the user input
-            $validatedData = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required|string|min:8',
-            ], [
-                'email.required' => 'Email is required.',
-                'email.email' => 'Email is not valid.',
-                'password.required' => 'Password is required.',
-                'password.min' => 'Password must be at least 8 characters long.',
+public function login(Request $request)
+{
+    if ($request->isMethod('post')) {
+        // Handle login form submission
+        $credentials = $request->only('email', 'password');
+
+        // Validate the user input
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ], [
+            'email.required' => 'Email is required.',
+            'email.email' => 'Email is not valid.',
+            'password.required' => 'Password is required.',
+            'password.in' => 'Incorrect password.',
+        ]);
+
+        // Check if the user exists in the database
+        $user = User::where('email', $validatedData['email'])->first();
+
+        if (!$user) {
+            return redirect()->back()->withInput($request->only('email'))->withErrors([
+                'email' => 'Email does not exist.',
             ]);
-    
-            // Check if the user exists in the database
-            if (Auth::attempt($validatedData)) {
-                return redirect(route('index'))->with('success', 'Welcome, you are logged in');
-            }
         }
-    
-        return view('login');
+
+        // Attempt authentication
+        if (Auth::attempt($validatedData)) {
+            return redirect(route('index'))->with('success', 'Welcome, you are logged in');
+        } else {
+            return redirect()->back()->withInput($request->only('email'))->withErrors([
+                'password' => 'Incorrect password.',
+            ]);
+        }
     }
+
+    return view('login');
+}
+
         public function profile(request $request) {
             return view ('profile');
         }

@@ -31,17 +31,10 @@
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
                 </div>
                 <div class="header-right">
-            <a href="{{ route('profile') }}">
-              <img src="/bootstrapred/img/icons/man.png" alt="">
-            </a>
-            <a href="{{ route('cart.view') }}">
-              <img src="/bootstrapred/img/icons/bag.png" alt="">
-            </a>
+         
             <form action="{{ route('logout') }}" method="POST" class="d-inline">
             @csrf
-            <button type="submit" class="btn btn-link p-0" style="color: black;">
-                <i class="fas fa-sign-out-alt"></i>
-            </button>
+          
         </form>
          </form>
                 </div>

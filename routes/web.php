@@ -67,9 +67,13 @@ Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 //Logout user
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::post('/cart/update-quantity', 'CartController@updateQuantity')->name('cart.update-quantity');
 
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
+Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+
+Route::post('/cart/deleteItem', [CartController::class, 'deleteItem'])->name('cart.deleteItem');
+Route::post('/cart/updateQuantityAndPrice', [CartController::class, 'updateQuantityAndPrice'])->name('cart.updateQuantityAndPrice');
 
 
 

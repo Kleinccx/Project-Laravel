@@ -55,22 +55,43 @@
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
             </div>
             <div class="header-right">
-            <span>{{ auth()->user()->name }}</span>
                 @if (auth()->check())
+                <span>{{ auth()->user()->name }}</span>
                     <a href="{{ route('profile') }}">
                         <img src="/bootstrapred/img/icons/man.png" alt="">
                     </a>
 
                     <a href="{{ route('cart.view') }}">
-                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+            <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
                     </a>
+                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to logout?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+            @csrf
+        <button type="button" class="btn btn-link p-0" style="color: black;" data-toggle="modal" data-target="#logoutModal">
+        <i class="fas fa-sign-out-alt"></i>
+        </button>
 
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0" style="color: black;">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </form>
                 @else
                 @guest
                     <div class="user-access">

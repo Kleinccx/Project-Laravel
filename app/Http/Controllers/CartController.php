@@ -54,31 +54,27 @@ public function view()
 }
 public function updateQuantity(Request $request)
 {
-    $itemId = $request->input('id'); // Assuming the item ID is passed with the name 'id'
-    $quantity = $request->input('quantity'); // Assuming the quantity is passed with the name 'quantity'
+    $request->validate([
+        'id' => 'required|integer|exists:carts,id',
+        'quantity' => 'required|integer|min:1',
+    ]);
 
-    try {
-        // Validate the input
-        if (!is_numeric($quantity) || $quantity < 1) {
-            throw new \Exception('Invalid quantity value.');
-        }
+    $cart = Cart::findOrFail($request->input('id'));
+    
+    // Update quantity
+    $cart->quantity = $request->input('quantity');
 
-        // Find the cart item or fail
-        $cartItem = CartItem::findOrFail($itemId);
-
-        // Update the quantity
-        $cartItem->quantity = $quantity;
-        $cartItem->save();
-
-        return response()->json(['success' => true, 'quantity' => $quantity]);
-    } catch (\Exception $e) {
-        // Log the error message for debugging purposes
-        \Log::error('Error updating cart item quantity:', ['error' => $e->getMessage()]);
-
-        // Return a JSON response with the error message
-        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    // Update price if needed
+    $product = $cart->product; // Assuming there's a relationship between Cart and Product models
+    if ($product) {
+        $cart->price = $product->price * $cart->quantity;
     }
+
+    $cart->save();
+
+    return response()->json(['success' => true, 'quantity' => $cart->quantity, 'price' => $cart->price]);
 }
+
 public function checkout(Request $request)
 {
     // Get the current user
@@ -98,6 +94,34 @@ public function checkout(Request $request)
         'totalAmount' => $totalAmount,
     ]);
 }
+   public function deleteItem(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:carts,id',
+        ]);
+
+        $cart = Cart::findOrFail($request->input('id'));
+        $cart->delete();
+
+        return response()->json(['success' => true]);
+    }
+    public function updatePrice(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:carts,id',
+            'price' => 'required|numeric|min:0'
+        ]);
+
+        try {
+            $cart = Cart::findOrFail($request->input('id'));
+            $cart->price = $request->input('price');
+            $cart->save();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to update cart item price.'], 500);
+        }
+    }
 
 
 
