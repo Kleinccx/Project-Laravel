@@ -22,25 +22,11 @@
     <link rel="stylesheet" href="/bootstrapred/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/style.css" type="text/css">
-</head>
-
-<body>
+    <body>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
-    
-    <!-- Search model -->
-	<div class="search-model">  
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here.....">
-			</form>
-		</div>
-	</div>
-	<!-- Search model end -->
-
     <!-- Header Section Begin -->
     <header class="header-section">
     <div class="container-fluid">
@@ -54,16 +40,40 @@
                     <a href="{{ route('profile') }}">
                         <img src="/bootstrapred/img/icons/man.png" alt="">
                     </a>
+
                     <a href="{{ route('cart.view') }}">
             <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
-                    </a>
+                    </a> 
+            <a class="nav-link" href="{{ route('orders') }}">
+         <i class="fas fa-receipt" style="color: black;"></i>
+            </a>
+            <form action="{{ route('logout') }}" method="POST" class="d-inline" id="logoutForm">
+    @csrf
+    <button type="button" class="btn btn-link p-0" style="color: black;" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+</form>
 
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0" style="color: black;">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function logout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will be logged out of the application.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log me out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Destroy the session
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    }
+</script>
+        </button>
                 @else
                 @guest
                     <div class="user-access">
@@ -81,18 +91,16 @@
                         <ul class="sub-menu">
                             <li><a href="{{ route('shop') }}">Product Page</a></li>
                             <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                            <li><a href="check-out.html">Check out</a></li>
+                            <li><a href="{{route('orders') }}">Order History</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./check-out.html">Blog</a></li>
                     <li><a href="./contact.html">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </div>
 </header>
-    <!-- Header Section Begin -->
     <!-- Header Info Begin -->
     <div class="header-info">
         <div class="container-fluid">
@@ -100,19 +108,19 @@
                 <div class="col-md-4">
                     <div class="header-item">
                         <img src="/bootstrapred/img/icons/delivery.png" alt="">
-                        <p>Free shipping on orders over $30 in USA</p>
+                        <p></p>
                     </div>
                 </div>
                 <div class="col-md-4 text-left text-lg-center">
                     <div class="header-item">
                         <img src="/bootstrapred/img/icons/voucher.png" alt="">
-                        <p>20% Student Discount</p>
+                        <p></p>
                     </div>
                 </div>
                 <div class="col-md-4 text-left text-xl-right">
                     <div class="header-item">
                     <img src="/bootstrapred/img/icons/sales.png" alt="">
-                    <p>30% off on dresses. Use code: 30OFF</p>
+                    <p></p>
                 </div>
                 </div>
             </div>
@@ -120,7 +128,6 @@
     </div>
     <!-- Header Info End -->
     <!-- Header End -->
-
     <!-- Page Add Section Begin -->
     <section class="page-add">
         <div class="container">
@@ -139,13 +146,7 @@
         </div>
     </section>
     <!-- Page Add Section End -->
-
-    <!-- Product Page Section Beign -->
-   
-    <!-- Product Page Section End -->
-
     <!-- Related Product Section Begin -->
-   <!-- Related Product Section Begin -->
 <section class="related-product spad">
     <div class="container">
         <div class="row">
@@ -171,7 +172,7 @@
                     </figure>
                     <div class="product-text">
                         <h6>{{ $product->product_name }}</h6>
-                        <p>${{ $product->price }}</p>
+                        <p>₱{{ $product->price }}</p>
                     </div>
                 </div>
             </div>
@@ -180,7 +181,6 @@
     </div>
 </section>
 <!-- Related Product Section End -->
-
 <script>
        document.addEventListener('DOMContentLoaded', function() {
        var addToCartForms = document.querySelectorAll('.add-to-cart-form');

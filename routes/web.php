@@ -69,7 +69,7 @@ Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 
-Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
 
 Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 

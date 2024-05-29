@@ -147,7 +147,7 @@
                                 <textarea id="address" name="address" class="form-control" placeholder="Address" required></textarea>
                             </div>
                             <div class="form-group actions">
-                                <button type="submit">Register</button>
+                                <button type="submit" class="btn btn-primary">Register</button>
                             </div>
                         </form>
                             <div class="form-group d-md-flex">
@@ -157,9 +157,6 @@
                                         <span class="checkmark"></span>
                                         Remember Me
                                     </label>
-                                </div>
-                                <div class="w-50 text-md-right">
-                                    <a href="#">Forgot Password</a>
                                 </div>
                             </div>
                         </form>

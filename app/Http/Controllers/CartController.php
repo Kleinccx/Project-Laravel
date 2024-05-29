@@ -75,25 +75,6 @@ public function updateQuantity(Request $request)
     return response()->json(['success' => true, 'quantity' => $cart->quantity, 'price' => $cart->price]);
 }
 
-public function checkout(Request $request)
-{
-    // Get the current user
-    $user = $request->user();
-
-    // Get the user's cart items
-    $cartItems = $user->carts()->with('product')->get();
-
-    // Calculate the total amount
-    $totalAmount = $cartItems->sum(function ($item) {
-        return $item->product->price * $item->quantity;
-    });
-
-    // Pass the cart items and total amount to the checkout view
-    return view('checkout', [
-        'cartItems' => $cartItems,
-        'totalAmount' => $totalAmount,
-    ]);
-}
    public function deleteItem(Request $request)
     {
         $request->validate([

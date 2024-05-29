@@ -34,18 +34,6 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-    
-    <!-- Search model -->
-	<div class="search-model">  
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here.....">
-			</form>
-		</div>
-	</div>
-	<!-- Search model end -->
-
     <!-- Header Section Begin -->
     <header class="header-section">
     <div class="container-fluid">
@@ -59,16 +47,40 @@
                     <a href="{{ route('profile') }}">
                         <img src="/bootstrapred/img/icons/man.png" alt="">
                     </a>
+
                     <a href="{{ route('cart.view') }}">
             <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
-                    </a>
+                    </a> 
+            <a class="nav-link" href="{{ route('orders') }}">
+         <i class="fas fa-receipt" style="color: black;"></i>
+            </a>
+            <form action="{{ route('logout') }}" method="POST" class="d-inline" id="logoutForm">
+    @csrf
+    <button type="button" class="btn btn-link p-0" style="color: black;" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+</form>
 
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-link p-0" style="color: black;">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function logout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will be logged out of the application.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log me out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Destroy the session
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    }
+</script>
+        </button>
                 @else
                 @guest
                     <div class="user-access">
@@ -86,11 +98,10 @@
                         <ul class="sub-menu">
                             <li><a href="{{ route('shop') }}">Product Page</a></li>
                             <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                            <li><a href="check-out.html">Check out</a></li>
+                            <li><a href="{{route('orders') }}">Order History</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./check-out.html">Blog</a></li>
                     <li><a href="./contact.html">Contact</a></li>
                 </ul>
             </nav>
@@ -104,19 +115,19 @@
                 <div class="col-md-4">
                     <div class="header-item">
                         <img src="/bootstrapred/img/icons/delivery.png" alt="">
-                        <p>Free shipping on orders over $30 in USA</p>
+                        <p></p>
                     </div>
                 </div>
                 <div class="col-md-4 text-left text-lg-center">
                     <div class="header-item">
                         <img src="/bootstrapred/img/icons/voucher.png" alt="">
-                        <p>20% Student Discount</p>
+                        <p></p>
                     </div>
                 </div>
                 <div class="col-md-4 text-left text-xl-right">
                     <div class="header-item">
                     <img src="/bootstrapred/img/icons/sales.png" alt="">
-                    <p>30% off on dresses. Use code: 30OFF</p>
+                    <p></p>
                 </div>
                 </div>
             </div>
@@ -160,7 +171,7 @@
                     </tr>
                 </thead>
                 <tbody id="cart-tbody">
-    @foreach ($cartItems as $item)
+        @foreach ($cartItems as $item)
         <tr class="cart-item" data-item-id="{{ $item->id }}">
             <td class="product-col">
                 <img src="{{ $item->product->imageUrl }}" alt="">
@@ -176,7 +187,6 @@
         </tr>
     @endforeach
 </tbody>
-
 <tfoot>
     <tr>
         <td colspan="3" class="text-right">Total Payment:&nbsp;</td>
@@ -191,17 +201,24 @@
     color: #888888;
 }
 </style>
-
-            </table>
+        </table>
         </div>
         <div class="card p-3 py-3 mt-3 card-1 text-center">
-             <h4>Delivery Address</h4> <div class="p-3 card-2"> 
-                <div class="p-3 card-child"> <div class="d-flex flex-row align-items-center"> 
-                    <span class="circle"> <i class="fa fa-home"></i> 
-                </span> <div class="d-flex flex-column ms-3"> 
-                    <h6 class="fw-bold">Home</h6> 
+    <h4>Delivery Address</h4>
+    <div class="p-3 card-2">
+        <div class="p-3 card-child" style="border: 2px solid #B0BCC2; font-weight: bold;">
+            <div class="d-flex flex-row align-items-center">
+                <span class="circle">
+                    <i class="fa fa-home"></i>
+                </span>
+                <div class="d-flex flex-column ms-3">
+                    <h6 class="fw-bold">Home</h6>
                     <span>2112, cottonwoon lane, <br>Ground Floor, NY ,20021</span>
-                 </div> </div> </div> </div> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
       <!-- Payment Method Begin -->
       <div class="container-fluid px-0" id="bg-div">
         <div class="row justify-content-center">
@@ -310,6 +327,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 $(document).ready(function() {
     // Set CSRF token in the AJAX request header
@@ -347,32 +365,58 @@ $(document).ready(function() {
             }
         });
 
-        // Send AJAX request
-        $.ajax({
-            type: 'POST',
-            url: '/checkout', // Use the /checkout route which corresponds to the store method in CheckoutController
-            data: data,
-            success: function(response) {
-                // Handle success response
-                console.log(response);
-                // Redirect or show success message
-                $('#success-message').show(); // Show the success message
-                $('#bank-payment-form').hide(); // Hide the form
-                // Clear cart UI
-                $('#cart-tbody').empty(); // Remove all cart items from the table body
-                $('tfoot').hide(); // Hide the total payment row
-            },
-            error: function(xhr, status, error) {
-                // Handle error
-                console.error(xhr.responseText);
-                // Show error message to the user
-                alert('Payment failed: ' + xhr.responseText);
+        // Check if there are items in the cart
+        if (!data.cartItems || data.cartItems.length === 0) {
+            Swal.fire(
+                'No Items in Cart',
+                'Please add items to the cart before proceeding to payment.',
+                'error'
+            );
+            return;
+        }
+
+        // Show SweetAlert confirmation
+        Swal.fire({
+            title: 'Confirm Payment',
+            text: "Are you sure you want to proceed with the payment?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, pay now!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Send AJAX request if user confirms
+                $.ajax({
+                    type: 'POST',
+                    url: '/checkout', // Use the /checkout route which corresponds to the store method in CheckoutController
+                    data: data,
+                    success: function(response) {
+                        // Handle success response
+                        console.log(response);
+                        Swal.fire(
+                            'Payment Successful!',
+                            'Your payment has been processed.',
+                            'success'
+                        ).then(() => {
+                            // Reload the page to reset form and UI
+                            location.reload();
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        console.error(xhr.responseText);
+                        Swal.fire(
+                            'Payment Failed',
+                            'There was an error processing your payment: ' + xhr.responseText,
+                            'error'
+                        );
+                    }
+                });
             }
         });
     });
 });
-
-
 </script>
 
 

@@ -37,24 +37,11 @@
   <!-- Other head elements -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-</head>
-</head>
 <body>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
-    
-    <!-- Search model -->
-	<div class="search-model">
-		<div class="h-100 d-flex align-items-center justify-content-center">
-			<div class="search-close-switch">+</div>
-			<form class="search-model-form">
-				<input type="text" id="search-input" placeholder="Search here.....">
-			</form>
-		</div>
-	</div>
-	<!-- Search model end -->
     <!-- Header Section Begin -->
     <header class="header-section">
     <div class="container-fluid">
@@ -71,41 +58,37 @@
 
                     <a href="{{ route('cart.view') }}">
             <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
-                    </a>
-                    <li class="nav-item">
-        <a class="nav-link" href="{{ route('orders') }}">
-            <i class="fa fa-box" style="color: black;"></i> Order History
-        </a>
-    </li>
-
-                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to logout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-          @csrf
-          <button type="submit" class="btn btn-primary">Logout</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-            @csrf
-        <button type="button" class="btn btn-link p-0" style="color: black;" data-toggle="modal" data-target="#logoutModal">
+                    </a> 
+            <a class="nav-link" href="{{ route('orders') }}">
+         <i class="fas fa-receipt" style="color: black;"></i>
+            </a>
+            <form action="{{ route('logout') }}" method="POST" class="d-inline" id="logoutForm">
+    @csrf
+    <button type="button" class="btn btn-link p-0" style="color: black;" onclick="logout()">
         <i class="fas fa-sign-out-alt"></i>
-        </button>
+    </button>
+</form>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function logout() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will be logged out of the application.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log me out!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Destroy the session
+                document.getElementById('logoutForm').submit();
+            }
+        });
+    }
+</script>
+        </button>
                 @else
                 @guest
                     <div class="user-access">
@@ -123,11 +106,10 @@
                         <ul class="sub-menu">
                             <li><a href="{{ route('shop') }}">Product Page</a></li>
                             <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                            <li><a href="check-out.html">Check out</a></li>
+                            <li><a href="{{route('orders') }}">Order History</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./check-out.html">Blog</a></li>
                     <li><a href="./contact.html">Contact</a></li>
                 </ul>
             </nav>
