@@ -72,6 +72,12 @@
                     <a href="{{ route('cart.view') }}">
             <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
                     </a>
+                    <li class="nav-item">
+        <a class="nav-link" href="{{ route('orders') }}">
+            <i class="fa fa-box" style="color: black;"></i> Order History
+        </a>
+    </li>
+
                     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

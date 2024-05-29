@@ -49,14 +49,13 @@
                 <img src="/bootstrapred/img/jarlogo.png" alt="" width="160" height="50">
             </div>
             <div class="header-right">
-            <span>{{ auth()->user()->name }}</span>
                 @if (auth()->check())
+                <span>{{ auth()->user()->name }}</span>
                     <a href="{{ route('profile') }}">
                         <img src="/bootstrapred/img/icons/man.png" alt="">
                     </a>
-
                     <a href="{{ route('cart.view') }}">
-                        <img src="/bootstrapred/img/icons/bag.png" alt="">
+            <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
                     </a>
 
                     <form action="{{ route('logout') }}" method="POST" class="d-inline">

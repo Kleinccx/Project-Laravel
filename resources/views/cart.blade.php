@@ -10,8 +10,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Violet | Template</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+ <!-- Google Font -->
+ <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -23,6 +23,10 @@
     <link rel="stylesheet" href="/bootstrapred/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/bootstrapred/css/style.css" type="text/css">
+    <head>
+  <!-- Other head elements -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 </head>
 
 <body>
@@ -365,10 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="newslatter-form">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="#">
-                            <input type="text" placeholder="Your email address">
-                            <button type="submit">Subscribe to our newsletter</button>
-                        </form>
+                  
                     </div>
                 </div>
             </div>

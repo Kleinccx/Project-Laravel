@@ -14,6 +14,10 @@
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="/bootstrapred/css/bootstrap.min.css" type="text/css">
@@ -32,7 +36,7 @@
     </div>
     
     <!-- Search model -->
-	<div class="search-model">
+	<div class="search-model">  
 		<div class="h-100 d-flex align-items-center justify-content-center">
 			<div class="search-close-switch">+</div>
 			<form class="search-model-form">
@@ -41,6 +45,7 @@
 		</div>
 	</div>
 	<!-- Search model end -->
+
     <!-- Header Section Begin -->
     <header class="header-section">
     <div class="container-fluid">
@@ -54,38 +59,16 @@
                     <a href="{{ route('profile') }}">
                         <img src="/bootstrapred/img/icons/man.png" alt="">
                     </a>
-
                     <a href="{{ route('cart.view') }}">
             <li><i class="fa fa-shopping-bag" style="color: black;"></i></span> </li>
                     </a>
-                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to logout?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-          @csrf
-          <button type="submit" class="btn btn-primary">Logout</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-            @csrf
-        <button type="button" class="btn btn-link p-0" style="color: black;" data-toggle="modal" data-target="#logoutModal">
-        <i class="fas fa-sign-out-alt"></i>
-        </button>
 
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-link p-0" style="color: black;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
                 @else
                 @guest
                     <div class="user-access">
@@ -170,15 +153,15 @@
                
                     <tr>
                         <th class="product-h">Product</th>
-                        <th>Price</th>
+                        <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>Total Price</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody id="cart-tbody">
-                @foreach ($cartItems as $item)
-                    <tr class="cart-item" data-item-id="{{ $item->id }}">
+    @foreach ($cartItems as $item)
+        <tr class="cart-item" data-item-id="{{ $item->id }}">
             <td class="product-col">
                 <img src="{{ $item->product->imageUrl }}" alt="">
                 <div class="p-title">
@@ -187,179 +170,260 @@
             </td>
             <td class="price-col">{{ $item->price }}</td>
             <td class="quantity-col">
-          
-                <span style>{{$item->quantity}}</span>
+                <span>{{$item->quantity}}</span>
             </td>
             <td>{{ $item->quantity * $item->product->price }}</td>
         </tr>
-                    @endforeach
-                </tbody>
+    @endforeach
+</tbody>
+
+<tfoot>
+    <tr>
+        <td colspan="3" class="text-right">Total Payment:&nbsp;</td>
+        <td class="text-gray"><strong>{{ number_format($cartItems->sum(function($item) {
+            return $item->quantity * $item->product->price;
+        }), 2, '.', ',') }}</strong></td>
+    </tr>
+</tfoot>
+
+<style>
+.text-gray {
+    color: #888888;
+}
+</style>
+
             </table>
         </div>
-
-        <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-lg-0 mb-3">
-                <div class="card p-3">
-                    <div class="img-box">
-                        <img src="https://www.freepnglogos.com/uploads/visa-logo-download-png-21.png" alt="">
-                    </div>
-                    <div class="number">
-                        <label class="fw-bold" for="">**** **** **** 1060</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <small><span class="fw-bold">Expiry date:</span><span>10/16</span></small>
-                        <small><span class="fw-bold">Name:</span><span>Kumar</span></small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-lg-0 mb-3">
-                <div class="card p-3">
-                    <div class="img-box">
-                        <img src="https://www.freepnglogos.com/uploads/mastercard-png/file-mastercard-logo-svg-wikimedia-commons-4.png"
-                            alt="">
-                    </div>
-                    <div class="number">
-                        <label class="fw-bold">**** **** **** 1060</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <small><span class="fw-bold">Expiry date:</span><span>10/16</span></small>
-                        <small><span class="fw-bold">Name:</span><span>Kumar</span></small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-lg-0 mb-3">
-                <div class="card p-3">
-                    <div class="img-box">
-                        <img src="https://www.freepnglogos.com/uploads/discover-png-logo/credit-cards-discover-png-logo-4.png"
-                            alt="">
-                    </div>
-                    <div class="number">
-                        <label class="fw-bold">**** **** **** 1060</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <small><span class="fw-bold">Expiry date:</span><span>10/16</span></small>
-                        <small><span class="fw-bold">Name:</span><span>Kumar</span></small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 mt-4">
-                <div class="card p-3">
-                    <p class="mb-0 fw-bold h4">Payment Methods</p>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="card p-3">
-                    <div class="card-body border p-0">
-                        <p>
-                            <a class="btn btn-primary w-100 h-100 d-flex align-items-center justify-content-between"
-                                data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
-                                aria-controls="collapseExample">
-                                <span class="fw-bold">PayPal</span>
-                                <span class="fab fa-cc-paypal">
-                                </span>
-                            </a>
-                        </p>
-                       
-                    </div>
-                    <div class="card-body border p-0">
-                        <p>
-                            <a class="btn btn-primary p-2 w-100 h-100 d-flex align-items-center justify-content-between"
-                                data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
-                                aria-controls="collapseExample">
-                                <span class="fw-bold">Credit Card</span>
-                                <span class="">
-                                    <span class="fab fa-cc-amex"></span>
-                                    <span class="fab fa-cc-mastercard"></span>
-                                    <span class="fab fa-cc-discover"></span>
-                                </span>
-                            </a>
-                        </p>
-                        <div class="collapse show p-3 pt-0" id="collapseExample">
-                            <div class="row">
-                                <div class="col-lg-5 mb-lg-0 mb-3">
-                                    <p class="h4 mb-0">Summary</p>
-                                    <p class="mb-0"><span class="fw-bold">Product:</span><span class="c-green">: Name of
-                                            product</span>
-                                    </p>
-                                    <p class="mb-0">
-                                        <span class="fw-bold">Price:</span>
-                                        <span class="c-green">:$452.90</span>
-                                    </p>
-                                    <p class="mb-0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque
-                                        nihil neque
-                                        quisquam aut
-                                        repellendus, dicta vero? Animi dicta cupiditate, facilis provident quibusdam ab
-                                        quis,
-                                        iste harum ipsum hic, nemo qui!</p>
+        <div class="card p-3 py-3 mt-3 card-1 text-center">
+             <h4>Delivery Address</h4> <div class="p-3 card-2"> 
+                <div class="p-3 card-child"> <div class="d-flex flex-row align-items-center"> 
+                    <span class="circle"> <i class="fa fa-home"></i> 
+                </span> <div class="d-flex flex-column ms-3"> 
+                    <h6 class="fw-bold">Home</h6> 
+                    <span>2112, cottonwoon lane, <br>Ground Floor, NY ,20021</span>
+                 </div> </div> </div> </div> </div>
+      <!-- Payment Method Begin -->
+      <div class="container-fluid px-0" id="bg-div">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 col-12">
+                <div class="card card0">
+                    <div class="d-flex" id="wrapper">
+                        <!-- Sidebar -->
+                        <div class="bg-light border-right" id="sidebar-wrapper">
+                            <div class="sidebar-heading pt-5 pb-4"><strong>Payment Method</strong></div>
+                            <div class="list-group list-group-flush">
+                                <a data-toggle="tab" href="#menu1" id="tab1" class="tabs list-group-item bg-light">
+                                    <div class="list-div my-2">
+                                        <div class="fa fa-home"></div> &nbsp;&nbsp; Bank
+                                    </div>
+                                </a>
+                                <a data-toggle="tab" href="#menu2" id="tab2" class="tabs list-group-item active1"></a>
+                            </div>
+                        </div>
+                        <!-- Page Content -->
+                        <div id="page-content-wrapper">
+                            <div class="row pt-3" id="border-btm">
+                                <div class="col-4">
+                                    <button class="btn btn-success mt-4 ml-3 mb-3" id="menu-toggle">
+                                        <div class="bar4"></div>
+                                        <div class="bar4"></div>
+                                        <div class="bar4"></div>
+                                    </button>
                                 </div>
-                                <div class="col-lg-7">
-                                    <form action="" class="form">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form__div">
-                                                    <input type="text" class="form-control" placeholder=" ">
-                                                    <label for="" class="form__label">Card Number</label>
-                                                </div>
-                                            </div>
+                                <div class="col-8">
+                                    <div class="row justify-content-right">
+                                        <div class="col-12">
+                                            <p class="mb-0 mr-4 mt-4 text-right">{{ auth()->user()->email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-right">
+                                        <div class="col-12">
+                                            <p class="mb-0 mr-4 text-right">Pay <span class="top-highlight">{{ number_format($cartItems->sum(function($item) {
+                                                return $item->quantity * $item->product->price;
+                                            }), 2, '.', ',') }}</span> </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="text-center" id="test">Pay</div>
+                            </div>
+                            <div class="tab-content">
+                                <div id="menu1" class="tab-pane">
+                                    <div class="row justify-content-center">
+                                        <div class="col-11">
+                                            <div class="form-card">
+                                                <h3 class="mt-0 mb-4 text-center">Enter bank details to pay</h3>
+                                                <form id="bank-payment-form">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="input-group">
+                                                                <input type="text" name="bank_name" id="bk_nm" placeholder="BBB Bank" required>
+                                                                <label>BANK NAME</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="input-group">
+                                                                <input type="text" name="beneficiary_name" id="ben-nm" placeholder="John Smith" required>
+                                                                <label>BENEFICIARY NAME</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="input-group">
+                                                                <input type="text" name="swift_code" placeholder="ABCDAB1S" class="placeicon" minlength="8" maxlength="11" required>
+                                                                <label>SWIFT CODE</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Include hidden input for cart items -->
+                                                   <!-- Include hidden inputs for each cart item -->
+                                                    @foreach ($cartItems as $index => $item)
+                                                        <input type="hidden" name="cartItems[{{ $index }}][product_id]" value="{{ $item->product_id }}">
+                                                        <input type="hidden" name="cartItems[{{ $index }}][quantity]" value="{{ $item->quantity }}">
+                                                    @endforeach
+                                                    <input type="hidden" name="payment_method" value="bank">
 
-                                            <div class="col-6">
-                                                <div class="form__div">
-                                                    <input type="text" class="form-control" placeholder=" ">
-                                                    <label for="" class="form__label">MM / yy</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-6">
-                                                <div class="form__div">
-                                                    <input type="password" class="form-control" placeholder=" ">
-                                                    <label for="" class="form__label">cvv code</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form__div">
-                                                    <input type="text" class="form-control" placeholder=" ">
-                                                    <label for="" class="form__label">name on the card</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="btn btn-primary w-100">Sumbit</div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <input type="submit" value="Pay" class="btn btn-success placeicon">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <p class="text-center mb-5" id="below-btn"><a href="#">Use a test card</a></p>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
+                                <div id="menu2" class="tab-pane"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="btn btn-primary payment">
-                    Make Payment
-                </div>
-            </div>
         </div>
     </div>
-    
-        <div class="cart-btn">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Set CSRF token in the AJAX request header
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#bank-payment-form').submit(function(e) {
+        e.preventDefault(); // Prevent the form from submitting normally
+
+        // Gather form data
+        var formData = $(this).serializeArray();
+
+        // Convert form data to object
+        var data = {};
+        $.each(formData, function(_, field) {
+            if (field.name.includes('cartItems')) {
+                // Handle nested cartItems array
+                let match = field.name.match(/cartItems\[(\d+)\]\[(\w+)\]/);
+                if (match) {
+                    let index = match[1];
+                    let key = match[2];
+                    if (!data.cartItems) {
+                        data.cartItems = [];
+                    }
+                    if (!data.cartItems[index]) {
+                        data.cartItems[index] = {};
+                    }
+                    data.cartItems[index][key] = field.value;
+                }
+            } else {
+                data[field.name] = field.value;
+            }
+        });
+
+        // Send AJAX request
+        $.ajax({
+            type: 'POST',
+            url: '/checkout', // Use the /checkout route which corresponds to the store method in CheckoutController
+            data: data,
+            success: function(response) {
+                // Handle success response
+                console.log(response);
+                // Redirect or show success message
+                $('#success-message').show(); // Show the success message
+                $('#bank-payment-form').hide(); // Hide the form
+                // Clear cart UI
+                $('#cart-tbody').empty(); // Remove all cart items from the table body
+                $('tfoot').hide(); // Hide the total payment row
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+                // Show error message to the user
+                alert('Payment failed: ' + xhr.responseText);
+            }
+        });
+    });
+});
+
+
+</script>
+
+
+
+
+     <!-- Payment Method End -->
+<style>
+*{margin: 0;padding: 0}body{overflow-x: hidden;background: #000000}#bg-div{margin: 0;margin-top:100px;margin-bottom:100px}#border-btm{padding-bottom: 20px;margin-bottom: 0px;box-shadow: 0px 35px 2px -35px lightgray}#test{margin-top: 0px;margin-bottom: 40px;border: 1px solid #FFE082;border-radius: 0.25rem;width: 60px;height: 30px;background-color: #FFECB3}.active1{color: #00C853 !important;font-weight: bold}.bar4{width: 35px;height: 5px;background-color: #ffffff;margin: 6px 0}.list-group .tabs{color: #000000}#menu-toggle{height: 50px}#new-label{padding: 2px;font-size: 10px;font-weight: bold;background-color: red;color: #ffffff;border-radius: 5px;margin-left: 5px}#sidebar-wrapper{min-height: 100vh;margin-left: -15rem;-webkit-transition: margin .25s ease-out;-moz-transition: margin .25s ease-out;-o-transition: margin .25s ease-out;transition: margin .25s ease-out}#sidebar-wrapper .sidebar-heading{padding: 0.875rem 1.25rem;font-size: 1.2rem}#sidebar-wrapper .list-group{width: 15rem}#page-content-wrapper{min-width: 100vw;padding-left: 20px;padding-right: 20px}#wrapper.toggled #sidebar-wrapper{margin-left: 0}.list-group-item.active{z-index: 2;color: #fff;background-color: #fff !important;border-color: #fff !important}@media (min-width: 768px){#sidebar-wrapper{margin-left: 0}#page-content-wrapper{min-width: 0;width: 100%}#wrapper.toggled #sidebar-wrapper{margin-left: -15rem;display: none}}.card0{margin-top: 10px;margin-bottom: 10px}.top-highlight{color: #00C853;font-weight: bold;font-size: 20px}.form-card input, .form-card textarea{padding: 10px 15px 5px 15px;border: none;border: 1px solid lightgrey;border-radius: 6px;margin-bottom: 25px;margin-top: 2px;width: 100%;box-sizing: border-box;font-family: arial;color: #2C3E50;font-size: 14px;letter-spacing: 1px}.form-card input:focus, .form-card textarea:focus{-moz-box-shadow: 0px 0px 0px 1.5px skyblue !important;-webkit-box-shadow: 0px 0px 0px 1.5px skyblue !important;box-shadow: 0px 0px 0px 1.5px skyblue !important;font-weight: bold;border: 1px solid skyblue;outline-width: 0}input.btn-success{height: 50px;color: #ffffff;opacity: 0.9}#below-btn a{font-weight: bold;color: #000000}.input-group{position:relative;width:100%;overflow:hidden}.input-group input{position:relative;height:90px;margin-left: 1px;margin-right: 1px;border-radius:6px;padding-top: 30px;padding-left: 25px}.input-group label{position:absolute;height: 24px;background: none;border-radius: 6px;line-height: 48px;font-size: 15px;color: gray;width:100%;font-weight:100;padding-left: 25px}input:focus + label{color: #1E88E5}#qr{margin-bottom: 150px;margin-top: 50px}
+</style>
+<script>
+$(document).ready(function(){
+    //Menu Toggle Script
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+    // For highlighting activated tabs
+    $("#tab1").click(function () {
+        $(".tabs").removeClass("active1");
+        $(".tabs").addClass("bg-light"); 
+        $("#tab1").addClass("active1");
+        $("#tab1").removeClass("bg-light");
+    });
+    $("#tab2").click(function () {
+        $(".tabs").removeClass("active1");
+        $(".tabs").addClass("bg-light");
+        $("#tab2").addClass("active1");
+        $("#tab2").removeClass("bg-light");
+    });
+    $("#tab3").click(function () {
+        $(".tabs").removeClass("active1");
+        $(".tabs").addClass("bg-light");
+        $("#tab3").addClass("active1");
+        $("#tab3").removeClass("bg-light");
+    });
+})
+
+</script>
             <div class="row">
                 <div class="col-lg-6">
 
                 </div>
                 <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
-                    <div class="site-btn clear-btn">BACK</div>
-                    <a href="{{ route('checkout') }}" class="site-btn update-btn">Confirm</a>
+             
                 </div>
             </div>
         </div>
     </div>
 </div>
- 
-
-
-
 <!-- Cart Page Section End -->
-
     <!-- Footer Section Begin -->
     <footer class="footer-section spad">
         <div class="container">
@@ -609,6 +673,71 @@
             border: 1.5px solid #1A73E8;
             box-shadow: none;
         }
+    </style>
+
+  <!-- Delivery Address CCS -->
+    <style>
+     
+.card-1{
+width:400px;
+border-radius:18px;
+border:none;
+}
+.card-2{
+    border-radius:20px;
+}
+
+
+.card-child{
+    
+    border:3px solid blue;
+    border-radius:16px;
+    
+}
+
+.circle{
+    
+    background-color:#ebdffb;
+    height:50px;
+    width:50px;
+    border-radius:50%;
+    display:flex;
+    color:#9553ea;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+        
+}
+
+
+.circle-2{
+    
+    background-color:#fbebdf;
+    height:50px;
+    width:50px;
+    border-radius:50%;
+    display:flex;
+    color:#ea9253;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+        
+}
+
+
+.circle-3{
+    
+    background-color:blue;
+    height:50px;
+    width:50px;
+    border-radius:50%;
+    display:flex;
+    color:#fff;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+        
+}
     </style>
 </body>
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -75,7 +76,7 @@ Route::post('/cart/updateQuantity', [CartController::class, 'updateQuantity'])->
 Route::post('/cart/deleteItem', [CartController::class, 'deleteItem'])->name('cart.deleteItem');
 Route::post('/cart/updateQuantityAndPrice', [CartController::class, 'updateQuantityAndPrice'])->name('cart.updateQuantityAndPrice');
 
-
-
+Route::post('/checkout', [OrderController::class, 'store']);
+Route::get('/order', [OrderController::class, 'orderDetails'])->name('orders');
 
 
