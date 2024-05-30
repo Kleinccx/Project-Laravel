@@ -18,4 +18,8 @@ class HomeController extends Controller
      $users = User::all();
      return view ('index')->with('products', $products)->with('users',$users);
     }
+    public function contact()
+    {
+        return view('contact');
+    }
 }

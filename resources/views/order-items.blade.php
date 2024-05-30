@@ -102,7 +102,7 @@
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -165,8 +165,8 @@
                                 <th scope="col">Product</th>
                                 <th scope="col">Unit Price</th>
                                 <th scope="col" class="text-center">Quantity</th>
-                                <th scope="col">Price</th>
                                 <th scope="col">Total Price</th>
+                                <th scope="col">Order Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -180,8 +180,8 @@
                                     </td>
                                     <td>₱{{ number_format($item->price, 2) }}</td>
                                     <td class="text-center">{{ $item->quantity }}</td>
-                                    <td>₱{{ number_format($item->quantity * $item->price, 2) }}</td>
                                     <td>₱{{ number_format($order->total_amount, 2) }}</td>
+                                    <td>Delivered</td>
                                 </tr>
                             @endforeach
                         </tbody>

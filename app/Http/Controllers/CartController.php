@@ -103,6 +103,7 @@ public function updateQuantity(Request $request)
             return response()->json(['success' => false, 'message' => 'Failed to update cart item price.'], 500);
         }
     }
+    
 
 
 

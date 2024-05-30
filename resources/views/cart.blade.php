@@ -80,7 +80,7 @@
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -115,7 +115,7 @@
       <!-- Page Add Section Begin -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<div class="cart-page">
+    <div class="cart-page">
     <div class="container">
         <div class="cart-table">
             <table>
@@ -130,7 +130,7 @@
                 </thead>
                 <tbody id="cart-tbody">
                     @foreach($cart_items as $item)
-                    <tr class="cart-item" data-item-id="{{ $item->id }}">
+                    <tr class="cart-item" data-item-id="{{ $item->id }}" data-unit-price="{{ $item->price }}">
                         <td class="product-col">
                             <img src="{{ $item->product->imageUrl }}" alt="">
                             <div class="p-title">
@@ -145,11 +145,8 @@
                             <div class="quantity-error"></div>
                         </td>
                         <td class="product-close">
-    <span class="remove-item" onclick="deleteCartItem({{ $item->id }}, this)">Delete</span>
-</td>
-
-                        
-                        
+                            <span class="remove-item" onclick="deleteCartItem({{ $item->id }}, this)">Delete</span>
+                        </td>  
                     </tr>
                     @endforeach
                 </tbody>
@@ -169,7 +166,6 @@
         </div>
     </div>
 </div>
-<!-- Your HTML structure remains unchanged -->
 
 <style>
 .quantity-control {
@@ -194,38 +190,6 @@
 </style>
 
 <script>
-function deleteCartItem(id, quantityCol) {
-    var confirmation = confirm("Are you sure you want to delete this product?");
-    if (confirmation) {
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                url: '/cart/deleteItem',
-                type: 'POST',
-                data: { id: id },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    if (response.success) {
-                        quantityCol.closest('.cart-item').remove();
-                        resolve(true);
-                    } else {
-                        alert('An error occurred while deleting the item.');
-                        reject();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error deleting item:', error);
-                    alert('An error occurred while deleting the item.');
-                    reject();
-                }
-            });
-        });
-    }
-}
-</script>
-
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     var quantityMinusControls = document.querySelectorAll('.quantity-minus');
     var quantityPlusControls = document.querySelectorAll('.quantity-plus');
@@ -245,6 +209,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateQuantity(control, change) {
         var quantityCol = control.closest('.quantity-col');
         var quantityValueElement = quantityCol.querySelector('.quantity-value');
+        var priceCol = control.closest('.cart-item').querySelector('.price-col');
+        var unitPrice = parseFloat(control.closest('.cart-item').dataset.unitPrice);
         var quantityValue = parseInt(quantityValueElement.textContent);
         var newQuantity = quantityValue + change;
 
@@ -258,8 +224,9 @@ document.addEventListener('DOMContentLoaded', function() {
         var id = control.closest('.cart-item').dataset.itemId;
         var errorMessageElement = quantityCol.querySelector('.quantity-error');
 
-        // Update the quantity value in the cart item row immediately for better UX
+        // Update the quantity and price value in the cart item row immediately for better UX
         quantityValueElement.textContent = newQuantity;
+        priceCol.textContent = (unitPrice * newQuantity).toFixed(2);
 
         // Update the quantity in the database
         updateQuantityInDatabase(id, newQuantity)
@@ -277,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function showError(originalValue, errorElement, message) {
             quantityValueElement.textContent = originalValue;
+            priceCol.textContent = (unitPrice * originalValue).toFixed(2);
             errorElement.textContent = message;
             errorElement.style.display = 'block';
         }
@@ -289,8 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 type: 'POST',
                 data: { id: id, quantity: quantity },
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 success: function(response) {
                     resolve(response);
                 },
@@ -325,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
 
 
 

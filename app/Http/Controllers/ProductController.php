@@ -49,13 +49,18 @@ class ProductController extends Controller
 
             return redirect()->route('index')->with('success', 'Product added successfully');
             }
-        public function shop()
-        {
-            $products = Product::all();
-            $users = User::all();
-
-            return view('shop', compact('products', 'users'));
-        }
+            public function shop()
+            {
+                // Fetch only products with quantity greater than 0
+                $products = Product::where('quantity', '>', 0)->get();
+                
+                // Fetch all users
+                $users = User::all();
+            
+                // Pass the filtered products and users to the view
+                return view('shop', compact('products', 'users'));
+            }
+            
         public function category()
         {
             $products = Product::all();

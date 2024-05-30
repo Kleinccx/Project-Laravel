@@ -51,12 +51,11 @@
                             <ul class="sub-menu">
                             <li><a href="{{ route('shop') }}">Product Page</a></li>
                                 <li><a href="{{ route('cart.view') }}">Shopping Cart</a></li>
-                                <li><a href="check-out.html">Check out</a></li>
+                                <li><a href="{{route('orders') }}">Order History</a></li>
                             </ul>
                         </li>
                         <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="./check-out.html">Blog</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
+                        <li><a href="{{ route('contact') }}">Contact</a></li>
                     </ul>
                 </nav>
             </div>
@@ -106,10 +105,7 @@
                     <h3 class="mb-4">Sign In</h3>
                   </div>
                   <div class="w-100">
-                    <p class="social-media d-flex justify-content-end">
-                      <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-                      <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-                    </p>
+                   
                   </div>
                 </div>
                 <form method="POST" action="{{ route('login') }}">
@@ -147,7 +143,6 @@
                       </label>
                     </div>
                     <div class="w-50 text-md-right">
-                      <a href="#">Forgot Password</a>
                     </div>
                   </div>
                 </form>
@@ -157,8 +152,7 @@
           </div>
         </div>
       </div>
-    </section>
-
+  </section>
     <script src="/loginbootstrap/js/jquery.min.js"></script>
     <script src="/loginbootstrap/js/popper.js"></script>
     <script src="/loginbootstrap/js/bootstrap.min.js"></script>

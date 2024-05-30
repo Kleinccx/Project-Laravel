@@ -60,7 +60,6 @@
         <i class="fas fa-sign-out-alt"></i>
     </button>
 </form>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function logout() {
@@ -102,7 +101,7 @@
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -143,6 +142,7 @@
                         <h2>Checkout<span>.</span></h2>
                         <a href="{{route('index')}}">Home</a>
                         <a href="{{route('checkout')}}">Checkout</a>
+                        
                
                     </div>
                 </div>
@@ -154,7 +154,6 @@
     </section>
     <!-- Page Add Section End -->
     <!-- Header End -->
-
  <!-- Page Cart Section Begin -->
  <div class="cart-page">
     <div class="container">
@@ -179,7 +178,7 @@
                     <h5>{{ $item->product->product_name }}</h5>
                 </div>
             </td>
-            <td class="price-col">{{ $item->price }}</td>
+            <td class="price-col">{{ $item->product->price }}</td>
             <td class="quantity-col">
                 <span>{{$item->quantity}}</span>
             </td>
@@ -219,6 +218,7 @@
         </div>
     </div>
 </div>
+
       <!-- Payment Method Begin -->
       <div class="container-fluid px-0" id="bg-div">
         <div class="row justify-content-center">
@@ -307,11 +307,6 @@
                                                             <input type="submit" value="Pay" class="btn btn-success placeicon">
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <p class="text-center mb-5" id="below-btn"><a href="#">Use a test card</a></p>
-                                                        </div>
-                                                    </div>
                                                 </form>
                                             </div>
                                         </div>
@@ -374,7 +369,6 @@ $(document).ready(function() {
             );
             return;
         }
-
         // Show SweetAlert confirmation
         Swal.fire({
             title: 'Confirm Payment',
