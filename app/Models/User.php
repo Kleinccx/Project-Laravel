@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Support\Facades\Hash;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,7 +14,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
@@ -23,13 +22,13 @@ class User extends Authenticatable
         'password',
         'mobile_number',
         'address',
-        'status'
+        'status',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -37,15 +36,17 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-       
     ];
-    
+
+    /**
+     * Get the user's carts.
+     */
     public function carts()
     {
         return $this->hasMany(Cart::class);

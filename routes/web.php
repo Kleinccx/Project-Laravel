@@ -49,10 +49,10 @@ Route::get('/product-details/{id}',[ProductController::class, 'productDetails'])
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
 //Add product page
-Route::get('/add-product',[ProductController::class, 'addProduct']);
+Route::get('/add-product',[AdminController::class, 'addProduct']);
 
 //process the product to be added
-Route::post('/add-product', [ProductController::class, 'addProductPost'])->name('add.product.post');
+Route::post('/add-product', [AdminController::class, 'addProductPost'])->name('add.product.post');
 
 //Shop Route
 Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
@@ -71,9 +71,6 @@ Route::get('/category', [ProductController::class, 'category'])->name('category'
 
 //About Route
 Route::view('/about', 'about')->name('about');
-
-
-
 
 //User checkout Route
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
@@ -112,6 +109,15 @@ Route::post('/admin/delete', [AdminController::class, 'delete'])->name('admin.de
 Route::get('/admin/inventory', [AdminController::class, 'Inventory'])->name('admin.inventory');
 
 Route::get('/admin/add-product', [AdminController::class, 'AddProduct'])->name('admin.addProduct');
+
+Route::get('/admin/edit-product/{id}', [AdminController::class, 'editProduct'])->name('admin.editProduct');
+Route::post('/admin/update-product/{id}', [AdminController::class, 'updateProduct'])->name('admin.updateProduct');
+
+
+Route::delete('/admin/product/{id}', [AdminController::class, 'deleteProduct'])->name('admin.deleteProduct');
+
+
+
 
 
 

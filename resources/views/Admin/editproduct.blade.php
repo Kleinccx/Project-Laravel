@@ -55,6 +55,8 @@
                     </a>
                             </div>        
                             </a>
+                            
+                           
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                     </a>
@@ -81,58 +83,63 @@
             <div id="layoutSidenav_content">
                 <main>
                 <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active"></li>
-                </ol>
-
-<!-- Add Product -->
+                    <li class="breadcrumb-item active"></li></ol>
+@section('content')
 <section>
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
                 <div class="card mt-0">
                     <div class="card-title text-center mt-3">
-                    <h3><i class="fas fa-shirt"></i> Add Product</h3>
+                        <h3>{{ isset($product) ? 'Edit Product' : 'Add Product' }}</h3>
                     </div>
                     <div class="card-body">
-                        <form action="/add-product" method="post"  enctype="multipart/form-data">
+                        <form action="{{ isset($product) ? route('admin.updateProduct', $product->id) : route('admin.addProductPost') }}" method="post"  enctype="multipart/form-data">
                             @csrf
+                            @if(isset($product))
+                                @method('POST')
+                            @endif
                             <div class="form-group mb-4">
                                 <label for="productname"><i class="fas fa-shopping-bag"></i> Product Name:</label>
-                                <input type="text" class="form-control" name="product_name" id="productname" placeholder="Enter Product Name" required>
+                                <input type="text" class="form-control" name="product_name" id="productname" placeholder="Enter Product Name" value="{{ isset($product) ? $product->product_name : '' }}" required>
                                 <div class="invalid-feedback">Product Name Can't Be Empty</div>
                             </div>
+
                             <div class="form-group mb-4">
                                 <label for="description"><i class="fas fa-clipboard-list"></i> Description:</label>
-                                <textarea class="form-control" name="description" id="description" placeholder="Enter Product Description" required></textarea>
+                                <textarea class="form-control" name="description" id="description" placeholder="Enter Product Description" required>{{ isset($product) ? $product->description : '' }}</textarea>
                                 <div class="invalid-feedback">Description Can't Be Empty</div>
                             </div>
+
                             <div class="form-group mb-4">
                                 <label for="price"><i class="fas fa-dollar-sign"></i> Product Price:</label>
-                                <input type="number" class="form-control" name="price" id="price" placeholder="Enter Product Price" required>
+                                <input type="number" class="form-control" name="price" id="price" placeholder="Enter Product Price" value="{{ isset($product) ? $product->price : '' }}" required>
                                 <div class="invalid-feedback">Product Price Can't Be Empty</div>
                             </div>
+
                             <div class="form-group mb-4">
                                 <label for="quantity"><i class="fas fa-layer-group"></i> Quantity:</label>
-                                <input type="number" class="form-control" name="quantity" id="quantity" placeholder="Enter Quantity" required>
+                                <input type="number" class="form-control" name="quantity" id="quantity" placeholder="Enter Quantity" value="{{ isset($product) ? $product->quantity : '' }}" required>
                                 <div class="invalid-feedback">Quantity Can't Be Empty</div>
                             </div>
+
                             <div class="form-group mb-4">
                                 <label for="image"><i class="fas fa-image"></i> Product Image:</label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="imageUrl" id="image" required>
+                                    <input type="file" class="custom-file-input" name="imageUrl" id="image">
                                     <label class="custom-file-label" for="imageUrl"></label>
                                     <div class="invalid-feedback">File Format Not Supported</div>
                                 </div>
                             </div>
+
                             <div class="form-group mb-4">
-                                <label for="productStatus"><i class="fas fa-info-circle"></i> Product Status:</label>
-                                <select class="form-control" name="product_status" id="productStatus" required>
-                                    <option value="">Select Status</option>
-                                    <option value="Available">Available</option>
-                                    <option value="Out of Stock">Out of Stock</option>
-                                </select>
-                                <div class="invalid-feedback">Please select a product status</div>
-                            </div>
+                        <label for="productStatus"><i class="fas fa-info-circle"></i> Product Status:</label>
+                        <select class="form-control" name="product_status" id="productStatus" required>
+                            <option value="Available" {{ isset($product) && $product->product_status === 'Available' ? 'selected' : '' }}>Available</option>
+                            <option value="Out of Stock" {{ isset($product) && $product->product_status === 'Out of Stock' ? 'selected' : '' }}>Out of Stock</option>
+                        </select>
+                        <div class="invalid-feedback">Please select a product status</div>
+                    </div>
                             <div class="form-group mb-4">
                                 <label for="category_id"><i class="fas fa-cubes"></i> Category:</label>
                                 <div class="input-group">
@@ -140,26 +147,27 @@
                                     </div>
                                     <select class="form-control" name="category_id" id="category_id" required>
                                         <option value="">Select Category</option>
-                                        <option value="1">&#128086; Pants</option>
-                                        <option value="2">&#128085; Shirts</option>
-                                        <option value="3">&#128441; Longsleeve</option>
-                                        <option value="4">&#128084; Polo Shirt</option>
+                                        <option value="1" {{ isset($product) && $product->category_id == 1 ? 'selected' : '' }}>&#128086; Pants</option>
+                                        <option value="2" {{ isset($product) && $product->category_id == 2 ? 'selected' : '' }}>&#128085; Shirts</option>
+                                        <option value="3" {{ isset($product) && $product->category_id == 3 ? 'selected' : '' }}>&#128441; Longsleeve</option>
+                                        <option value="4" {{ isset($product) && $product->category_id == 4 ? 'selected' : '' }}>&#128084; Polo Shirt</option>
                                     </select>
                                 </div>
-                                <div class="invalid-feedback">Please select a category</div>
+                                <div class="invalid-feedback">Please  select a category</div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-5">
+    <a href="{{ route('admin.inventory') }}" class="btn btn-dark mx-2">Go Back</a>
+    <button class="btn btn-dark mx-2" type="submit">{{ isset($product) ? 'Update Product' : 'Add Product' }}</button>
+</div>
+                                </div>
                             </div>
-                                <div class="invalid-feedback">Please select a category</div>
-                            </div>
-                            <button class="btn btn-dark mt-5 mx-auto d-block" type="submit">Add Product</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+               </div>
+      </section>
 
-    <style>
+      
+        <style>
         .card {
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(176, 188, 194, 0.4);
@@ -231,20 +239,19 @@
             background-color: #23272b;
             border-color: #1d2124;
             }
-    </style>
+      </style>
+      
+         <!-- Include FontAwesome for icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-
-<!-- Include FontAwesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-         </script>
+        </script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/AdminBootstrap/dist/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-   <!-- Scripts -->
-   <script src="/assets/js/bootstrap.min.js"></script>
-</body>
-</html>
+        <!-- Scripts -->
+        <script src="/assets/js/bootstrap.min.js"></script>
+        </body>
+        </html>

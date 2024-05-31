@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+        <title>Jarred's Style Admin </title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{ asset('AdminBootstrap/dist/css/styles.css') }}" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -83,11 +83,17 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Inventory Management</h1>
+                    <div class="d-flex align-items-center">
+                    <i class="fas fa-boxes fa-2x me-3"></i>
+                    <h1 class="mt-4">Inventory Management</h1>
+                    </div>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Manage Product</li>
+                            <li class="breadcrumb-item active"></li>
                         </ol>
-                        <div class="container mt-5">
+                        <a href="{{ route('admin.addProduct') }}" class="btn btn-secondary btn-lg btn-block mb-3">
+                        <i class="fa fa-plus-circle"></i> Add Product
+                        </a>
+                        <div class="container mt-5">                  
             <h2>Products</h2>
             <table id="datatablesSimple" class="table">
                 <thead>
@@ -97,7 +103,10 @@
                         <th>Description</th>
                         <th>Quantity</th>
                         <th>Price</th>
-                        <th>Created At</th>
+                        <th>Category</th>
+                        <th>Image</th>
+                        <th>Created</th>
+                        <th>Updated</th>
                         <th>Status</th>
                         <th style="text-align:center;">Action</th>
                     </tr>
@@ -110,15 +119,20 @@
                 <td>{{ $product->description }}</td>
                 <th>{{ $product->quantity }}</th>
                 <td>{{ $product->price }}</td>
+                <td>{{ $product->category_id }}</td>
+                <td><img src="{{ $product->imageUrl }}" alt="{{ $product->name }}" class="img-fluid"></td>
                 <td>{{ $product->created_at }}</td>
+                <td>{{ $product->updated_at }}</td>
                 <td>{{ $product->product_status }}</td>
                 <td style="text-align:center;">
-                                <div class="btn-group" role="group">
-                                    <a href="{{ route('admin.addProduct') }}" class="btn btn-success btn-sm me-2">Add</a>
-                                    <button class="btn btn-primary btn-sm me-2">Edit</button>
-                                    <button class="btn btn-cyan btn-sm me-2">View</button>
-                                    <button class="btn btn-danger btn-sm me-2">Delete</button>
-               
+                    <div class="btn-group" role="group">
+                    <a href="{{ route('admin.editProduct', $product->id) }}" class="btn btn-primary btn-sm me-2">Edit</a>
+                    <button class="btn btn-cyan btn-sm me-2">View</button>                
+                <form id="deleteForm-{{ $product->id }}" action="{{ route('admin.deleteProduct', $product->id) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" onclick="confirmDelete({{ $product->id }})" class="btn btn-danger btn-sm me-2">Delete</button>
+                </form>
             </tr>
             @endforeach
         </tbody>
@@ -142,23 +156,49 @@
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
         <script>
+    function confirmDelete(productId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm-' + productId).submit();
+            }
+        });
+    }
+</script>
+        <script>
         $(document).ready(function() {
             $('#datatablesSimple').DataTable();
         });
     </script>
-<style>
-    .btn-cyan {
-  color: #fff;
-  background-color: #17a2b8;
-  border-color: #17a2b8;
-}
-</style>
+    <style>
+        .btn-cyan {
+            color: #fff;
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .fas.fa-boxes {
+        color: #007bff; 
+        }
+
+        h1 {
+        font-size: 2.5rem; 
+        font-weight: 600; 
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/AdminBootstrap/dist/js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
-        
     </body>
 </html>

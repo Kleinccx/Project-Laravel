@@ -121,14 +121,94 @@ class AdminController extends Controller
             return view('Admin.inventorycontrol', compact('products'));
         }
 
-        
-        public function AddProduct()
+        public function addProduct() 
         {
-            // Fetch products from the database
-            $products = Product::all();
-        
-            // Return the view with the products data
-            return view('Admin.addproduct', ['products' => $products]);
+            return view ('admin.addProduct');
         }
+        public function addProductPost(Request $request)
+        {
+            \Log::info('Request Data: ', $request->all());
         
+            $validatedData = $request->validate([
+                'product_name' => 'required|unique:products,product_name',
+                'price' => 'required',
+                'quantity' => 'required',
+                'description' => 'required',
+                'imageUrl' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'product_status' => 'required',
+                'category_id' => 'required|integer|in:1,2,3,4',
+            ]);
+        
+            \Log::info('Validated Data: ', $validatedData);
+        
+            $product = new Product;
+            $product->product_name = $validatedData['product_name'];
+            $product->price = $validatedData['price'];
+            $product->quantity = $validatedData['quantity'];
+            $product->description = $validatedData['description'];
+            $product->product_status = $validatedData['product_status'];
+            $product->category_id = $validatedData['category_id'];
+        
+            if ($request->hasFile('imageUrl')) {
+                $image = $request->file('imageUrl');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images'), $imageName);
+                $imageUrl = asset('images/' . $imageName);
+                $product->imageUrl = $imageUrl;
+            }
+        
+            $product->save();
+        
+            // Redirect to the admin inventory page
+            return redirect()->route('admin.inventory')->with('success', 'Product added successfully');
+        }
+
+        public function editProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.editProduct', compact('product'));
+    }
+
+    public function updateProduct(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'product_name' => 'required|unique:products,product_name,' . $id,
+            'price' => 'required',
+            'quantity' => 'required',
+            'description' => 'required',
+            'imageUrl' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'product_status' => 'required',
+            'category_id' => 'required|integer|in:1,2,3,4',
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->product_name = $validatedData['product_name'];
+        $product->price = $validatedData['price'];
+        $product->quantity = $validatedData['quantity'];
+        $product->description = $validatedData['description'];
+        $product->product_status = $validatedData['product_status'];
+        $product->category_id = $validatedData['category_id'];
+
+        if ($request->hasFile('imageUrl')) {
+            $image = $request->file('imageUrl');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            $imageUrl = asset('images/' . $imageName);
+            $product->imageUrl = $imageUrl;
+        }
+
+        $product->save();
+
+        return redirect()->route('admin.inventory')->with('success', 'Product updated successfully');
+    }
+    public function deleteProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+    
+        return redirect()->route('admin.inventory')->with('success', 'Product deleted successfully');
+    }
+    
+
+
     }        

@@ -7,15 +7,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+        <title>Jarred's Style Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="{{ asset('AdminBootstrap/dist/css/styles.css') }}" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     
-    </head>
-    <body class="sb-nav-fixed">
+        </head>
+        <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3">Admin Dashboard</a>
@@ -53,11 +53,6 @@
                     </a>
                             </div>        
                             </a>
-                         
-                            
-                            
-                        
-                       
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                     </a>
@@ -74,24 +69,19 @@
                                     </a>
                                 </nav>
                             </div>
-                            
-                            
                             <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
-                            
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
                         Start Bootstrap
                     </div>
                 </nav>
             </div>
-
-            
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid ">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active"></li>
                         </ol>
                         <div class="row">
                         <!-- Card for Total Products -->
@@ -146,22 +136,22 @@
                     </div>
                 </head>
                 <body>
-   <div class="container mt-5">
-    <h2>Users</h2>
-    <table id="datatablesSimple" class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Created At</th>
-                <th>Address</th>
-                <th class="text-center">Action</th> <!-- Added class="text-center" here -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-            <tr>
+        <div class="container mt-5">
+            <h2>Users</h2>
+            <table id="datatablesSimple" class="table">
+                <thead>
+                    <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                    <th>Address</th>
+                    <th class="text-center">Action</th> <!-- Added class="text-center" here -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($users as $user)
+                <tr>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
@@ -173,21 +163,21 @@
                 <a href="#" onclick="openEditModal('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->mobile_number }}', '{{ $user->address }}', '{{ $user->status }}')" class="btn btn-primary btn-sm">Edit</a>
                 <a href="#" onclick="openDetailsModal('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}', '{{ $user->email_verified_at }}', '{{ $user->mobile_number }}', '{{ $user->address }}', '{{ $user->status }}')" class="btn btn-details btn-sm cyan">Details</a>
                 <button onclick="openDeleteModal('{{ $user->id }}')" class="btn btn-danger btn-sm">Delete</button>
-<style>
-    .cyan {
-        background-color: cyan;
-        color: black; /* Set text color to white for better contrast */
-    }
+           
+           <style>
+                .cyan {
+                    background-color: cyan;
+                    color: black; /* Set text color to white for better contrast */
+                }
 
-    .cyan:hover {
-        background-color: aqua; /* Change color on hover if desired */
-    }
-</style>
+                .cyan:hover {
+                    background-color: aqua; /* Change color on hover if desired */
+                }
+            </style>
 
                 </td>
             </tr>
             @endforeach
-            <!-- More rows here -->
         </tbody>
     </table>
 </div>
@@ -244,7 +234,66 @@
         </div>
     </div>
 </div>
-<script>
+
+<!-- User Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);">
+            <div class="modal-header" style="background-color: #343a40; color: white; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h5 class="modal-title" id="detailsModalLabel">User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body" id="detailsContainer">
+                        <!-- User details will be displayed here dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #f8f9fa; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #6c757d; color: white;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this user?</p>
+                    <input type="hidden" id="deleteUserId" value=""> <!-- Hidden input for user ID -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>  
+        <style>
+            .btn-cyan {
+        background-color: #00FFFF; 
+        color: #000000; 
+        border-color: #00FFFF; 
+        }
+
+        .btn-cyan:hover {
+        background-color: #00CED1; /* Darker shade of cyan on hover */
+        color: #000000;
+        border-color: #00CED1;
+        }
+        </style>
+      
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+      
+        <script>
     
   function openEditModal(id, name, email, mobileNumber, address) {
     $('#userId').val(id);
@@ -360,69 +409,6 @@
             });
         }
 </script>
-
-
-<!-- User Details Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="background-color: #f8f9fa; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);">
-            <div class="modal-header" style="background-color: #343a40; color: white; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                <h5 class="modal-title" id="detailsModalLabel">User Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body" id="detailsContainer">
-                        <!-- User details will be displayed here dynamically -->
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background-color: #f8f9fa; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #6c757d; color: white;">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this user?</p>
-                    <input type="hidden" id="deleteUserId" value=""> <!-- Hidden input for user ID -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>  
-
-
-
-        <style>
-            .btn-cyan {
-        background-color: #00FFFF; /* Cyan color */
-        color: #000000; /* Set text color to black */
-        border-color: #00FFFF; /* Set border color to cyan */
-        }
-
-        .btn-cyan:hover {
-        background-color: #00CED1; /* Darker shade of cyan on hover */
-        color: #000000;
-        border-color: #00CED1;
-        }
-        </style>
-      
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-      
     <script>
         // Include the AJAX setup for CSRF token
         $.ajaxSetup({

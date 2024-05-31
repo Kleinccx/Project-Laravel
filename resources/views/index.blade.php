@@ -1,14 +1,4 @@
-  <!--@include('templates.header')
 
-    <x-navbar />
-
-    <h2> All Products </h2>
-    <a href ="/add-product" class="btn-btn-primary mb-3"> Add Product </a>
-    <x-products :products="$products"/>
-    <h2> All Users </h2>z
-    <x-users :users="$users"/>
-
-    @include('templates.footer') -->
     <!DOCTYPE html>
 <html lang="zxx">
 

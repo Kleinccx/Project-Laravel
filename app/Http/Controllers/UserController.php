@@ -33,36 +33,45 @@ class UserController extends Controller
             return view('register');
         }
     }
-
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
             $validatedData = $request->validate([
-                'email' => 'required|email',
+                'email' => 'required|email|exists:users,email',
                 'password' => 'required|string',
+            ], [
+                'email.exists' => 'This email is not registered.',
             ]);
-
-            $user = User::where('email', $validatedData['email'])->first();
-
-            if (!$user || !Hash::check($validatedData['password'], $user->password)) {
+    
+            $credentials = $request->only('email', 'password');
+    
+            if (Auth::attempt($credentials)) {
+                // Retrieve the authenticated user
+                $user = Auth::user();
+    
+                // Update user's status to 1 upon successful login
+                $user->update(['status' => 1]);
+    
+                // Redirect users based on their status
+                if ($user->status == 2) {
+                    // Admin user, redirect to admin dashboard
+                    return redirect(route('admin.dashboard'))->with('success', 'Welcome, you are logged in as admin');
+                } else {
+                    // Regular user, redirect to index page
+                    return redirect(route('index'))->with('success', 'Welcome, you are logged in');
+                }
+            } else {
+                // Authentication failed
                 return redirect()->back()->withInput($request->only('email'))->withErrors([
                     'password' => 'Incorrect email or password.',
                 ]);
             }
-
-            if (Auth::attempt($validatedData)) {
-                $user->update(['status' => 1]);
-                return redirect(route('index'))->with('success', 'Welcome, you are logged in');
-            } else {
-                return redirect()->back()->withInput($request->only('email'))->withErrors([
-                    'password' => 'Incorrect password.',
-                ]);
-            }
         }
-
+    
         return view('login');
     }
-
+    
+    
     public function logout(Request $request)
     {
         $user = Auth::user();

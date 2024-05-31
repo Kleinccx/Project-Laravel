@@ -166,15 +166,15 @@
                 <div class="col-lg-12">
                     <div class="categories-filter">
                         <div class="cf-left">
-                            <form>
-                                <select id="categoryFilter">
-                                    <option value="">Sort by</option>
-                                    <option value="1">Pants</option>
-                                    <option value="2">Shirts</option>
-                                    <option value="3">Longsleeves</option>
-                                    <option value="4">Poloshirts</option>
-                                </select>
-                            </form>
+                        <form>
+                        <select id="categoryFilter" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            <option value="">Sort by</option>
+                            <option value="1">&#128086; Pants</option>
+                            <option value="2">&#128085; Shirts</option>
+                            <option value="3">&#128441; Longsleeve</option>
+                            <option value="4">&#128084; Polo Shirt</option>
+                        </select>
+                    </form>
                         </div>
                         <div class="cf-right">
                             <span id="productCount"></span>
@@ -348,6 +348,9 @@
 					<a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
 				</div>
 			</div>
+            <style>
+                
+            </style>
 
 <div class="container text-center pt-5">
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->

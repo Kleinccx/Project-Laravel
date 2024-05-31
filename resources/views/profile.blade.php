@@ -114,7 +114,6 @@
         </nav>
       </div>
     </div>
-
     <div class="row">
       <div class="col-lg-4">
         <div class="card mb-4">
@@ -123,10 +122,8 @@
               class="rounded-circle img-fluid" style="width: 150px;">
             <h5 class="my-3">{{ auth()->user()->name }}</h5>
             <p class="text-muted mb-1">{{ auth()->user()->email }}</p>
-            <p class="text-muted mb-4">{{ auth()->user()->address }}</p>
+            <p class="text-muted mb-4">{{ auth()->user()->status }}</p>
             <div class="d-flex justify-content-center mb-2">
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
-              <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>
             </div>
           </div>
         </div>

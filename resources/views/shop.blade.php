@@ -97,7 +97,7 @@
                         </ul>
                     </li>
                     <li><a href="{{ route('about') }}">About</a></li>
-                    <li><a href="./contact.html">Contact</a></li>
+                    <li><a href="{{ route('contact') }}">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -148,7 +148,30 @@
         </div>
     </section>
     <!-- Page Add Section End -->
-    <!-- Related Product Section Begin -->
+    <style>
+    body {
+        overflow-x: hidden; /* Hide horizontal scrollbar */
+    }
+</style>
+<!-- Search Bar and Price Range -->
+<!-- Search Bar and Price Range -->
+<div class="row">
+    <div class="col-lg-3 offset-lg-1">
+        <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="Search products...">
+    </div>
+    <div class="col-lg-3 offset-lg-5">
+        <select id="priceRangeDropdown" class="form-select">
+            <option value="">Select Price Range</option>
+            <option value="100-200">100 - 200</option>
+            <option value="300-400">300 - 400</option>
+            <option value="500-800">500 - 800</option>
+            <option value="800-1000">800 - 1000</option>
+            <option value="1000-2000">1000 - 2000</option>
+            <!-- Add more price ranges as needed -->
+        </select>
+    </div>
+</div>
+<!-- Related Product Section Begin -->
 <section class="related-product spad">
     <div class="container">
         <div class="row">
@@ -158,9 +181,9 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="productList">
             @foreach($products as $product)
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-3 col-sm-6 product-item">
                 <div class="single-product-item">
                     <figure>
                         <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST" class="add-to-cart-form">
@@ -183,6 +206,167 @@
     </div>
 </section>
 <!-- Related Product Section End -->
+    <!-- Footer Section Begin -->
+    <footer class="footer-section spad">
+        <div class="container">
+            <div class="newslatter-form">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form action="#">
+                            <input type="text" placeholder="Your email address">
+                            <button type="submit">Subscribe to our newsletter</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-widget">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>About us</h4>
+                            <ul>
+                                <li>About Us</li>
+                                <li>Community</li>
+                                <li>Jobs</li>
+                                <li>Shipping</li>
+                                <li>Contact Us</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Customer Care</h4>
+                            <ul>
+                                <li>Search</li>
+                                <li>Privacy Policy</li>
+                                <li>2019 Lookbook</li>
+                                <li>Shipping & Delivery</li>
+                                <li>Gallery</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Our Services</h4>
+                            <ul>
+                                <li>Free Shipping</li>
+                                <li>Free Returnes</li>
+                                <li>Our Franchising</li>
+                                <li>Terms and conditions</li>
+                                <li>Privacy Policy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Information</h4>
+                            <ul>
+                                <li>Payment methods</li>
+                                <li>Times and shipping costs</li>
+                                <li>Product Returns</li>
+                                <li>Shipping methods</li>
+                                <li>Conformity of the products</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="social-links-warp">
+			<div class="container">
+				<div class="social-links">
+					<a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
+					<a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
+					<a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
+					<a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+					<a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
+					<a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
+				</div>
+			</div>
+
+<div class="container text-center pt-5">
+                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+            </div>
+
+		</div>
+    </footer>
+    <!-- Footer Section End -->
+
+
+    <!-- CCS -->
+    <style>
+        .single-product-item {
+            position: relative;
+        }
+
+        .add-to-cart-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .add-to-cart-btn i {
+            margin-right: 5px;
+        }
+    </style>
+    <script>
+    $(document).ready(function() {
+        // Bootstrap dropdown initialization
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+<!-- CSS for styling -->
+<style>
+    #priceRangeDropdown {
+        width: 200px; /* Adjust width as needed */
+        margin-top: 10px; /* Add some top margin */
+    }
+
+    @media (max-width: 991px) {
+        .col-lg-3.offset-lg-5 {
+            margin-top: 10px; /* Adjust top margin for smaller screens */
+            margin-right: 15px; /* Adjust right margin for smaller screens */
+        }
+    }
+</style>
+
+
+<!-- JavaScript to handle price range selection and filtering -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var priceRangeDropdown = document.getElementById('priceRangeDropdown');
+        var products = document.querySelectorAll('.product-item');
+
+        priceRangeDropdown.addEventListener('change', function() {
+            var selectedRange = priceRangeDropdown.value;
+            filterProducts(selectedRange);
+        });
+
+        function filterProducts(selectedRange) {
+            var rangeValues = selectedRange.split('-');
+            var minPrice = parseInt(rangeValues[0]);
+            var maxPrice = parseInt(rangeValues[1]);
+
+            products.forEach(function(product) {
+                var price = parseInt(product.querySelector('.product-text p').textContent.substring(1)); // Extract price from product element
+                if (price >= minPrice && price <= maxPrice) {
+                    product.style.display = "block"; // Show product if it falls within the selected range
+                } else {
+                    product.style.display = "none"; // Hide product if it doesn't fall within the selected range
+                }
+            });
+        }
+    });
+</script>
 <script>
        document.addEventListener('DOMContentLoaded', function() {
        var addToCartForms = document.querySelectorAll('.add-to-cart-form');
@@ -302,121 +486,29 @@
         }
         }
             </style>
+            <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var searchInput = document.getElementById('searchInput');
+    var productList = document.getElementById('productList').getElementsByClassName('product-item');
 
-    <!-- Footer Section Begin -->
-    <footer class="footer-section spad">
-        <div class="container">
-            <div class="newslatter-form">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <form action="#">
-                            <input type="text" placeholder="Your email address">
-                            <button type="submit">Subscribe to our newsletter</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-widget">
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>About us</h4>
-                            <ul>
-                                <li>About Us</li>
-                                <li>Community</li>
-                                <li>Jobs</li>
-                                <li>Shipping</li>
-                                <li>Contact Us</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>Customer Care</h4>
-                            <ul>
-                                <li>Search</li>
-                                <li>Privacy Policy</li>
-                                <li>2019 Lookbook</li>
-                                <li>Shipping & Delivery</li>
-                                <li>Gallery</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>Our Services</h4>
-                            <ul>
-                                <li>Free Shipping</li>
-                                <li>Free Returnes</li>
-                                <li>Our Franchising</li>
-                                <li>Terms and conditions</li>
-                                <li>Privacy Policy</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="single-footer-widget">
-                            <h4>Information</h4>
-                            <ul>
-                                <li>Payment methods</li>
-                                <li>Times and shipping costs</li>
-                                <li>Product Returns</li>
-                                <li>Shipping methods</li>
-                                <li>Conformity of the products</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="social-links-warp">
-			<div class="container">
-				<div class="social-links">
-					<a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
-					<a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
-					<a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
-					<a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
-					<a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
-					<a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
-				</div>
-			</div>
+    searchInput.addEventListener('keyup', function() {
+        var filter = searchInput.value.toUpperCase();
 
-<div class="container text-center pt-5">
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-            </div>
-
-		</div>
-    </footer>
-    <!-- Footer Section End -->
-
-
-    <!-- CCS -->
-    <style>
-        .single-product-item {
-            position: relative;
+        for (var i = 0; i < productList.length; i++) {
+            var productName = productList[i].getElementsByClassName('product-text')[0].getElementsByTagName('h6')[0];
+            if (productName.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                productList[i].style.display = "";
+            } else {
+                productList[i].style.display = "none";
+            }
         }
+    });
+});
+</script>
 
-        .add-to-cart-btn {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background-color: #fff;
-            padding: 5px 10px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            font-size: 14px;
-            color: #333;
-            text-decoration: none;
-        }
 
-        .add-to-cart-btn i {
-            margin-right: 5px;
-        }
-    </style>
 
-    <!-- Js Plugins -->
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
