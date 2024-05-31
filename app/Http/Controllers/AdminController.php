@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class AdminController extends Controller
@@ -17,27 +19,52 @@ class AdminController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function dashboard()
-    {
-    // Retrieve counts
-    $productCount = Product::count();
-    $cartCount = Cart::count();
-    
-    $orders = Order::selectRaw('DATE(created_at) as date, COUNT(*) as total_orders')
-                   ->groupBy('date')
-                   ->get();
-    $userCounts = User::selectRaw('DATE(created_at) as date, COUNT(*) as total_users')
-                      ->groupBy('date')
-                      ->get();
+    public function dashboard(Request $request)
+{
+    // Check if the user is authenticated
+    if (Auth::check()) {
+        // Get the authenticated user
+        $user = Auth::user();
 
-          
-     $users = User::all();
-     $userCount = $users->count();
-     $orderCount = Order::count();
+        // If the user is an admin
+        if ($user->hasRole('admin')) {
+            // Retrieve counts
+            $productCount = Product::count();
+            $cartCount = Cart::count();
+            
+            $orders = Order::selectRaw('DATE(created_at) as date, COUNT(*) as total_orders')
+                           ->groupBy('date')
+                           ->get();
+            $userCounts = User::selectRaw('DATE(created_at) as date, COUNT(*) as total_users')
+                              ->groupBy('date')
+                              ->get();
 
-    return view('Admin.admindashboard', compact('userCount', 'productCount', 'cartCount', 'orders', 'userCounts', 'users', 'orderCount'));
+            $users = User::all();
+            $userCount = $users->count();
+            $orderCount = Order::count();
+
+            // Return the admin dashboard view
+            return view('Admin.admindashboard', compact('userCount', 'productCount', 'cartCount', 'orders', 'userCounts', 'users', 'orderCount'));
+        } else {
+            // Redirect the non-admin user to the index page
+            return redirect()->route('index');
+        }
+    } else {
+        // If the user is not authenticated, redirect them to the login page
+        return redirect()->route('login');
+    }
+}
+   public function logout(Request $request)
+   {
+       $user = Auth::user();
+       $user->update(['status' => 'inactive']);
+
+       Auth::logout();
+       $request->session()->invalidate();
+       $request->session()->regenerateToken();
+       
+       return redirect('/login');
    }
- 
     public function show($id)
         {
             $user = User::find($id);
@@ -111,15 +138,25 @@ class AdminController extends Controller
                 return response()->json(['success' => false, 'error' => 'An error occurred while deleting the user.']);
             }
         }
-      
-        public function Inventory()
-        {
-            // Fetch products from the database
-            $products = Product::all();
-    
-            // Return the view with the products data
-            return view('Admin.inventorycontrol', compact('products'));
+      public function Inventory(Request $request)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if ($user->hasRole('admin')) {
+
+                $products = Product::all();
+
+                return view('Admin.inventorycontrol', compact('products'));
+            } else {
+        
+                return redirect()->route('index');
+            }
+        } else {
+        
+            return redirect()->route('login');
         }
+    }
 
         public function addProduct() 
         {
@@ -208,6 +245,7 @@ class AdminController extends Controller
     
         return redirect()->route('admin.inventory')->with('success', 'Product deleted successfully');
     }
+
     
 
 

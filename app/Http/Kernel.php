@@ -70,6 +70,8 @@ class Kernel extends HttpKernel
         // other middlewares
         'auth.check' => \App\Http\Middleware\CheckAuthenticated::class,
         'PreventBackHistory' => \App\Http\Middleware\PreventBackHistory::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
+        
     ];
     
 }

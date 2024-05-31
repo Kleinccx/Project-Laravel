@@ -182,26 +182,30 @@
             </div>
         </div>
         <div class="row" id="productList">
-            @foreach($products as $product)
-            <div class="col-lg-3 col-sm-6 product-item">
-                <div class="single-product-item">
-                    <figure>
-                        <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST" class="add-to-cart-form">
-                            @csrf
-                            <button type="submit" class="add-to-cart-btn" data-product-id="{{ $product->id }}">
-                                <i class="fa fa-shopping-cart"></i>
-                            </button>
-                        </form>
-                        <img src="{{ $product->imageUrl }}" alt="">
-                        <div class="p-status">{{ $product->product_status }}</div>
-                    </figure>
-                    <div class="product-text">
-                        <h6>{{ $product->product_name }}</h6>
-                        <p>₱{{ $product->price }}</p>
-                    </div>
-                </div>
+        @foreach($products as $product)
+    <div class="col-lg-3 col-sm-6 product-item">
+        <div class="single-product-item">
+            <figure>
+                <!-- Check if product is in stock -->
+                @if($product->product_status == 'available')
+                    <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="POST" class="add-to-cart-form">
+                        @csrf
+                        <button type="submit" class="add-to-cart-btn" data-product-id="{{ $product->id }}">
+                            <i class="fa fa-shopping-cart"></i>
+                        </button>
+                    </form>
+                @endif
+                <img src="{{ $product->imageUrl }}" alt="">
+                <div class="p-status">{{ $product->product_status }}</div>
+            </figure>
+            <div class="product-text">
+                <h6>{{ $product->product_name }}</h6>
+                <p>₱{{ $product->price }}</p>
             </div>
-            @endforeach
+        </div>
+    </div>
+@endforeach
+
         </div>
     </div>
 </section>

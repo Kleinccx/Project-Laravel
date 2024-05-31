@@ -18,7 +18,7 @@ return new class extends Migration
           $table->decimal('price', 6, 2);
           $table->integer('quantity');
           $table->string('imageUrl')->nullable();
-          $table->string('product_status')->default('available');
+          $table->string('product_status')->default('Available');
           $table->unsignedBigInteger('category_id')->default('1');
        
           $table->timestamps();

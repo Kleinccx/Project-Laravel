@@ -62,12 +62,11 @@ class OrderController extends Controller
                 'product_id' => $item['product_id'],
                 'quantity' => $item['quantity'],
                 'price' => $product->price,
-                'product_name' => $product->product_name, // Store product name
-                'imageUrl' => $product->imageUrl, // Store product image URL
+                'product_name' => $product->product_name,
+                'imageUrl' => $product->imageUrl, 
             ]);
         }
 
-        // Remove cart items from the cart table
         Cart::where('user_id', Auth::id())
             ->whereIn('product_id', array_column($validated['cartItems'], 'product_id'))
             ->delete();
@@ -77,30 +76,39 @@ class OrderController extends Controller
 
     public function checkout(Request $request)
     {
-        // Get the current user
-        $user = $request->user();
-
-        // Get the user's cart items
-        $cartItems = $user->carts()->with('product')->get();
-
-        // Calculate the total amount
-        $totalAmount = $cartItems->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
-
-        // Pass the cart items and total amount to the checkout view
-        return view('checkout', [
-            'cartItems' => $cartItems,
-            'totalAmount' => $totalAmount,
-        ]);
+        if (auth()->check()) {
+            $user = auth()->user();
+    
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.dashboard');
+            } else {
+                $cartItems = $user->carts()->with('product')->get();
+                $totalAmount = $cartItems->sum(function ($item) {
+                    return $item->product->price * $item->quantity;
+                });
+    
+                return view('checkout', [
+                    'cartItems' => $cartItems,
+                    'totalAmount' => $totalAmount,
+                ]);
+            }
+        } else {
+            return redirect()->route('login');
+        }
     }
-
-    public function orderDetails()
+    public function orderDetails(Request $request)
     {
-        $orders = Order::where('user_id', Auth::id())
-            ->with('orderItems.product') // Eager load the product relationship
-            ->get();
-
-        return view('order-items', compact('orders'));
+ 
+    if (!$request->user()) {
+      
+        return redirect()->route('login');
     }
+    $user = $request->user();
+
+    $orders = Order::where('user_id', $user->id)
+        ->with('orderItems.product')
+        ->get();
+
+    return view('order-items', compact('orders'));
+}
 }

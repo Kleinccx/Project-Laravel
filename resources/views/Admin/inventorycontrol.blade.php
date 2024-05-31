@@ -127,7 +127,6 @@
                 <td style="text-align:center;">
                     <div class="btn-group" role="group">
                     <a href="{{ route('admin.editProduct', $product->id) }}" class="btn btn-primary btn-sm me-2">Edit</a>
-                    <button class="btn btn-cyan btn-sm me-2">View</button>                
                 <form id="deleteForm-{{ $product->id }}" action="{{ route('admin.deleteProduct', $product->id) }}" method="post">
                     @csrf
                     @method('DELETE')

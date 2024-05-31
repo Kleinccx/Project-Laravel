@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('mobile_number')->nullable();
             $table->text('address')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active'); // Adding product status
+            $table->string('role')->default('user'); 
             $table->rememberToken();
             $table->timestamps();
         });

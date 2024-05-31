@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-//Login and Register Group Middleware to prevent back history
+// Login and Register Group Middleware to prevent back history
 Route::group(['middleware' => 'web'], function () {
     // Add routes that need the PreventBackHistory middleware
     Route::get('/login', [UserController::class, 'login'])->name('login')->middleware('PreventBackHistory');
@@ -32,15 +32,30 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/register', [UserController::class, 'register'])->name('register')->middleware('PreventBackHistory');
     Route::post('/register', [UserController::class, 'register'])->middleware('PreventBackHistory');
-    //User profile Route
-Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('PreventBackHistory');
-
-
 });
 
+// Routes that require authentication and role checks
+Route::middleware(['auth'])->group(function () {
+    // User routes
+    Route::middleware('role:user')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index'); // User dashboard
+        // Add more user-specific routes here
+    });
+
+    // Admin routes
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // Admin dashboard
+        Route::get('/admin/inventory', [AdminController::class, 'inventoryControl'])->name('admin.inventory'); // Admin inventory control
+        Route::get('/admin/edit-product', [AdminController::class, 'editProduct'])->name('admin.editProduct'); // Admin edit product
+        Route::get('/admin/add-product', [AdminController::class, 'addProduct'])->name('admin.addProduct'); // Admin add product
+        // Add more admin-specific routes here
+    });
+
+    // Profile route accessible to all authenticated users
+ 
+});
 //User to navigate to about page
-Route::get('/about', [PagesController::class,'about']
-);
+   Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 
 // Route::get('/',[HomeController::class, 'index']);
 Route::get('/product-details/{id}',[ProductController::class, 'productDetails']);
@@ -66,11 +81,14 @@ Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('addTo
 //Logout user
 Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware('PreventBackHistory');
 
+//Logout Admin
+Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+
 //Category Route
 Route::get('/category', [ProductController::class, 'category'])->name('category');
 
 //About Route
-Route::view('/about', 'about')->name('about');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 //User checkout Route
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
@@ -115,8 +133,6 @@ Route::post('/admin/update-product/{id}', [AdminController::class, 'updateProduc
 
 
 Route::delete('/admin/product/{id}', [AdminController::class, 'deleteProduct'])->name('admin.deleteProduct');
-
-
 
 
 

@@ -38,19 +38,28 @@ public function addToCart(Request $request, $id)
     return redirect()->back()->with('success', 'Product added to cart successfully');
 }
 
-public function view()
+public function view(Request $request)
 {
-    $user = auth()->user();
-    $cart_items = $user ? $user->carts()->with('product')->get() : [];
+    if (auth()->check()) {
+        $user = auth()->user();
 
-    $total = 0;
-    if ($cart_items instanceof Countable && count($cart_items) > 0) {
-        foreach ($cart_items as $item) {
-            $total += $item->quantity * $item->product->quantity;
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } else {
+            $cart_items = $user->carts()->with('product')->get();
+
+            $total = 0;
+            if ($cart_items instanceof Countable && count($cart_items) > 0) {
+                foreach ($cart_items as $item) {
+                    $total += $item->quantity * $item->product->quantity;
+                }
+            }
+
+            return view('cart', compact('cart_items', 'total'));
         }
+    } else {
+        return redirect()->route('login');
     }
-
-    return view('cart', compact('cart_items', 'total'));
 }
 public function updateQuantity(Request $request)
 {

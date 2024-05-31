@@ -19,20 +19,22 @@ class UserController extends Controller
                 'mobile_number' => 'required|string|max:20',
                 'address' => 'required|string|max:255',
             ]);
-
+    
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => bcrypt($validatedData['password']),
                 'mobile_number' => $validatedData['mobile_number'],
                 'address' => $validatedData['address'],
+                'role' => 'user', // Default role assigned to new users
             ]);
-
+    
             return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
         } else {
             return view('register');
         }
     }
+    
     public function login(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -46,22 +48,15 @@ class UserController extends Controller
             $credentials = $request->only('email', 'password');
     
             if (Auth::attempt($credentials)) {
-                // Retrieve the authenticated user
                 $user = Auth::user();
-    
-                // Update user's status to 1 upon successful login
                 $user->update(['status' => 1]);
     
-                // Redirect users based on their status
-                if ($user->status == 2) {
-                    // Admin user, redirect to admin dashboard
+                if ($user->hasRole('admin')) {
                     return redirect(route('admin.dashboard'))->with('success', 'Welcome, you are logged in as admin');
                 } else {
-                    // Regular user, redirect to index page
                     return redirect(route('index'))->with('success', 'Welcome, you are logged in');
                 }
             } else {
-                // Authentication failed
                 return redirect()->back()->withInput($request->only('email'))->withErrors([
                     'password' => 'Incorrect email or password.',
                 ]);
@@ -83,13 +78,23 @@ class UserController extends Controller
         
         return redirect('/login');
     }
-
-    public function profile()
+    public function profile(Request $request)
     {
+        // Check if the user is authenticated
         if (auth()->check()) {
+            // Get the current user
             $user = auth()->user();
-            return view('profile', compact('user'));
+    
+            // Check if the user is an admin
+            if ($user->hasRole('admin')) {
+                // If the user is an admin, redirect them to the admin dashboard
+                return redirect()->route('admin.dashboard');
+            } else {
+                // Pass the user to the profile view
+                return view('profile', compact('user'));
+            }
         } else {
+            // If the user is not authenticated, redirect them to the login page
             return redirect()->route('login');
         }
     }

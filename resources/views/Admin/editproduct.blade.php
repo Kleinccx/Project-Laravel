@@ -135,7 +135,7 @@
                             <div class="form-group mb-4">
                         <label for="productStatus"><i class="fas fa-info-circle"></i> Product Status:</label>
                         <select class="form-control" name="product_status" id="productStatus" required>
-                            <option value="Available" {{ isset($product) && $product->product_status === 'Available' ? 'selected' : '' }}>Available</option>
+                            <option value="available" {{ isset($product) && $product->product_status === 'available' ? 'selected' : '' }}>available</option>
                             <option value="Out of Stock" {{ isset($product) && $product->product_status === 'Out of Stock' ? 'selected' : '' }}>Out of Stock</option>
                         </select>
                         <div class="invalid-feedback">Please select a product status</div>
