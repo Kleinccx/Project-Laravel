@@ -109,7 +109,10 @@ Route::post('/checkout', [OrderController::class, 'store']);
 Route::get('/order', [OrderController::class, 'orderDetails'])->name('orders');
 
 //User to access the contact page
+
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [HomeController::class, 'storeContact'])->name('contact.store');
+
 
 //Admin to access admin dashboard
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

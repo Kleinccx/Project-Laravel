@@ -11,27 +11,39 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-        if ($request->isMethod('post')) {
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8|confirmed',
-                'mobile_number' => 'required|string|max:20',
-                'address' => 'required|string|max:255',
-            ]);
-    
-            $user = User::create([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']),
-                'mobile_number' => $validatedData['mobile_number'],
-                'address' => $validatedData['address'],
-                'role' => 'user', // Default role assigned to new users
-            ]);
-    
-            return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+        // Check if the user is already logged in
+        if (Auth::check()) {
+            // If the logged-in user is an admin, redirect them to the admin dashboard
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } else {
+                // If the logged-in user is not an admin, redirect them to the appropriate page
+                return redirect()->intended('/');
+            }
         } else {
-            return view('register');
+            // If the user is not logged in, allow them to register
+            if ($request->isMethod('post')) {
+                $validatedData = $request->validate([
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => 'required|string|min:8|confirmed',
+                    'mobile_number' => 'required|string|max:20',
+                    'address' => 'required|string|max:255',
+                ]);
+        
+                $user = User::create([
+                    'name' => $validatedData['name'],
+                    'email' => $validatedData['email'],
+                    'password' => bcrypt($validatedData['password']),
+                    'mobile_number' => $validatedData['mobile_number'],
+                    'address' => $validatedData['address'],
+                    'role' => 'user', // Default role assigned to new users
+                ]);
+        
+                return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+            } else {
+                return view('register');
+            }
         }
     }
     

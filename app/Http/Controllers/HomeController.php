@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -39,23 +40,37 @@ class HomeController extends Controller
     }
     public function contact(Request $request)
     {
-      
         if (auth()->check()) {
-        
             $user = auth()->user();
-    
-  
+
             if ($user->hasRole('admin')) {
-              
                 return redirect()->route('admin.dashboard');
             } else {
-          
                 return view('contact', compact('user'));
             }
         } else {
             return redirect()->route('login');
         }
     }
+
+    public function storeContact(Request $request)
+    {
+        $request->validate([
+            'fullname' => 'required|string|max:100',
+            'phone' => 'nullable|string|max:15',
+            'message' => 'required|string',
+        ]);
+
+        $contact = new Contact();
+        $contact->fullname = $request->fullname;
+        $contact->email = auth()->user()->email;
+        $contact->phone = $request->phone;
+        $contact->message = $request->message;
+        $contact->save();
+
+        return redirect()->back()->with('success', 'Your message has been sent successfully!');
+    }
+
        
     public function about(Request $request)
     {

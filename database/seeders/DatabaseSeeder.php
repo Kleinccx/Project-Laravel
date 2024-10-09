@@ -10,6 +10,9 @@ class DatabaseSeeder extends Seeder
 {              
     public function run()
     {
+        $this->call([
+            AdminUserSeeder::class,
+        ]);
         // Create a specific product with different category IDs
         $products = [
             [
@@ -17,7 +20,7 @@ class DatabaseSeeder extends Seeder
                 'description' => 'A white shirt for men',
                 'price' => 250.00,
                 'quantity' => 10,
-                'imageUrl' => 'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/e08e8cb7-4009-48de-bff6-32742ff06ca7/sportswear-t-shirt-MV5kVX.png',
+                'imageUrl' => 'blob:https://www.facebook.com/b2c7c2cb-f2ce-48f8-b886-c2bbd0471c47',
                 'product_status' => 'available',
                 'category_id' => 2, // Category ID for shirt
             ],
