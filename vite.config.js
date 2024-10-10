@@ -9,6 +9,6 @@ export default defineConfig({
         }),
     ],
     build: {
-        outDir: 'public/build', // You can customize this path if needed
+        outDir: 'public/build', // Specify the output directory here
     },
 });
